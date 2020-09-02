@@ -27,6 +27,8 @@ public:
     ~Component();
 };
 
+#if __cplusplus > 201703L // C++20 support
 template<class T> concept ComponentType = std::is_base_of<Component, T>::value;
+#endif
 
 #endif //BOLT_COMPONENT_H

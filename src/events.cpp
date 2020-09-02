@@ -16,7 +16,7 @@ Events getEventFromSDL(Uint32 sdl_event) {
             {SDL_MOUSEWHEEL, Events::MOUSEWHEEL}
     };
 
-    if (EventLookup.contains(sdl_event)) {
+    if (EventLookup.count(sdl_event) == 1) {
         return EventLookup[sdl_event];
     }
     return Events::UNUSED;

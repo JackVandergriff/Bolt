@@ -140,4 +140,6 @@ std::ostream& operator<<(std::ostream& os, const vec2<T>& vec) {
     return os;
 }
 
+#define TEMPLATE_COMPONENT_TYPE "component_template_pseudo_macro.h"
+
 #endif //BOLT_UTILITY_H

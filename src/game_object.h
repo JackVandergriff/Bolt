@@ -10,9 +10,11 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <type_traits>
 
 #include "component.h"
 #include "events.h"
+#include "utility.h"
 
 class GameObject : public Component{
 private:
@@ -23,11 +25,19 @@ public:
     inline static std::set<GameObject*> gameObjects;
     std::string name;
 
-    template<ComponentType C> C* getComponent();
-    template<ComponentType C> std::unique_ptr<Component> removeComponent();
-    std::unique_ptr<Component> removeComponent(Component*);
+#include TEMPLATE_COMPONENT_TYPE
+    C* getComponent();
+#include TEMPLATE_COMPONENT_TYPE
+    std::unique_ptr<Component> removeComponent();
+#include TEMPLATE_COMPONENT_TYPE
+    C* addComponent(std::unique_ptr<Component>);
+
+#if __cplusplus > 201703L // C++20 support
     template<ComponentType C, class... Args> C* addComponent(Args&&...);
-    template<ComponentType C> C* addComponent(std::unique_ptr<Component>);
+#else // stuck on C++17
+    template<typename C, class... Args, class = typename std::enable_if<std::is_base_of<Component, C>::value>::type> C* addComponent(Args&&...);
+#endif
+    std::unique_ptr<Component> removeComponent(Component*);
 
     void update();
     void fixed();
@@ -41,7 +51,7 @@ public:
     ~GameObject();
 };
 
-template<ComponentType C>
+#include TEMPLATE_COMPONENT_TYPE
 C* GameObject::getComponent() {
     for (const auto& component : components) {
         if (auto casted = dynamic_cast<C*>(component.get())) {
@@ -51,7 +61,7 @@ C* GameObject::getComponent() {
     return nullptr;
 }
 
-template<ComponentType C>
+#include TEMPLATE_COMPONENT_TYPE
 std::unique_ptr<Component> GameObject::removeComponent() {
     for (const auto& component : components) {
         if (dynamic_cast<C*>(component.get())) {
@@ -66,7 +76,11 @@ std::unique_ptr<Component> GameObject::removeComponent() {
     return nullptr;
 }
 
+#if __cplusplus > 201703L // C++20 support
 template<ComponentType C, class... Args>
+#else // stuck on C++17
+template<typename C, class... Args, class = typename std::enable_if<std::is_base_of<Component, C>::value>::type>
+#endif
 C* GameObject::addComponent(Args&&... args) {
     std::unique_ptr<Component> comp = std::make_unique<C>(std::forward<Args>(args)...);
     if (std::is_same<C, GameObject>::value) {
@@ -79,7 +93,7 @@ C* GameObject::addComponent(Args&&... args) {
     return to_return;
 }
 
-template<ComponentType C>
+#include TEMPLATE_COMPONENT_TYPE
 C* GameObject::addComponent(std::unique_ptr<Component> component) {
     if (std::is_same<C, GameObject>::value) {
         children.push_back(component.get());

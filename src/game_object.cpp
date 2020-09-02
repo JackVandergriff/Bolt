@@ -53,7 +53,7 @@ GameObject::GameObject(std::string name) : GameObject() {
 void GameObject::dispatchEvent(const Event* event) {
     auto eventHandlers_reverse = WindowManager::getEventHandlersReverse();
     for (auto& component : components) {
-        if (eventHandlers_reverse[component.get()].contains(event->type)) {
+        if (eventHandlers_reverse[component.get()].count(event->type) == 1) {
             component->onEvent(event);
         }
     }
