@@ -6,7 +6,9 @@
 #define BOLT_COMPONENT_H
 
 #include <type_traits>
+#if __cplusplus > 201703L
 #include <concepts>
+#endif
 #include <SDL2/SDL.h>
 
 #include "events.h"
