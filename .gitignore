@@ -1,4 +1,4 @@
 /out/
 /cmake-build-debug/
-/post_cmake.sh
+/extras/post_cmake.sh
 .gitignore

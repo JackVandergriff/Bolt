@@ -25,11 +25,11 @@ public:
     inline static std::set<GameObject*> gameObjects;
     std::string name;
 
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_DECL
     C* getComponent();
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_DECL
     std::unique_ptr<Component> removeComponent();
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_DECL
     C* addComponent(std::unique_ptr<Component>);
 
 #if __cplusplus > 201703L // C++20 support
@@ -51,7 +51,7 @@ public:
     ~GameObject();
 };
 
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_IMPL
 C* GameObject::getComponent() {
     for (const auto& component : components) {
         if (auto casted = dynamic_cast<C*>(component.get())) {
@@ -61,7 +61,7 @@ C* GameObject::getComponent() {
     return nullptr;
 }
 
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_IMPL
 std::unique_ptr<Component> GameObject::removeComponent() {
     for (const auto& component : components) {
         if (dynamic_cast<C*>(component.get())) {
@@ -79,7 +79,7 @@ std::unique_ptr<Component> GameObject::removeComponent() {
 #if __cplusplus > 201703L // C++20 support
 template<ComponentType C, class... Args>
 #else // stuck on C++17
-template<typename C, class... Args, class = typename std::enable_if<std::is_base_of<Component, C>::value>::type>
+template<typename C, class... Args, class>
 #endif
 C* GameObject::addComponent(Args&&... args) {
     std::unique_ptr<Component> comp = std::make_unique<C>(std::forward<Args>(args)...);
@@ -93,7 +93,7 @@ C* GameObject::addComponent(Args&&... args) {
     return to_return;
 }
 
-#include TEMPLATE_COMPONENT_TYPE
+#include TEMPLATE_COMPONENT_TYPE_IMPL
 C* GameObject::addComponent(std::unique_ptr<Component> component) {
     if (std::is_same<C, GameObject>::value) {
         children.push_back(component.get());
