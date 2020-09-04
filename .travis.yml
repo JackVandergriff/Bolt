@@ -4,5 +4,5 @@ compiler:
   - clang
 
 script:
-  - cmake -DCMAKE_CXX_FLAGS="-lc++fs" .
+  - cmake -DCMAKE_CXX_FLAGS="-stdlib=libc++ -lc++fs" .
   - cmake --build .
