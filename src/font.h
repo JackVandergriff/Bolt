@@ -5,7 +5,7 @@
 #ifndef BOLT_FONT_H
 #define BOLT_FONT_H
 
-#include <SDL2/SDL_ttf.h>
+#include <SDL_ttf.h>
 #include <filesystem>
 
 class Font {

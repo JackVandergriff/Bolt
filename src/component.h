@@ -9,7 +9,7 @@
 #if __cplusplus > 201703L
 #include <concepts>
 #endif
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include "events.h"
 

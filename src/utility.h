@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <cmath>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 template<typename T>
 struct vec2 {

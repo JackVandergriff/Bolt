@@ -11,7 +11,7 @@ endif()
 
 message("using compiler: ${CMAKE_CXX_COMPILER}")
 
-include_directories(extras/SDL2)
+include_directories(extras/SDL2/include)
 link_directories(extras/SDL2/lib)
 
 include(GenerateExportHeader)

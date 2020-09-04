@@ -10,8 +10,6 @@
 #include "geometry.h"
 #include "utility.h"
 
-#include <concepts>
-
 class Transform : public Component {
 public:
     void onAttach(GameObject*) override;

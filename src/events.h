@@ -5,7 +5,7 @@
 #ifndef BOLT_EVENTS_H
 #define BOLT_EVENTS_H
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <memory>
 
 #include "utility.h"
