@@ -5,4 +5,4 @@ compiler:
 
 script:
   - cmake .
-  - cmake --build
+  - cmake --build .
