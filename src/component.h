@@ -1,5 +1,5 @@
 //
-// Created by jack on 8/19/20.
+// Copyright (c) 2020 Jack Vandergriff.
 //
 
 #ifndef BOLT_COMPONENT_H
