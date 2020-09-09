@@ -5,7 +5,7 @@
 #include "text_renderer.h"
 #include "window_manager.h"
 
-void TextRenderer::onAttach(GameObject* g) {
+void TextRenderer::onAttach() {
     transform = owner->getComponent<Transform>();
 }
 

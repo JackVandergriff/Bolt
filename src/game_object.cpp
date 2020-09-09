@@ -19,6 +19,8 @@ void GameObject::fixed() {
 
 GameObject::GameObject() {
     gameObjects.insert(this);
+    transform = addComponent<Transform>();
+    transform->transform = transform;
 }
 
 GameObject::~GameObject() {
@@ -29,7 +31,7 @@ std::unique_ptr<Component> GameObject::removeComponent(Component* to_remove) {
     for (auto& component : components) {
         if (component.get() == to_remove) {
             auto extracted = std::move(components.extract(component).value());
-            extracted->Component::onAttach(nullptr);
+            extracted->Component::onAttach();
             return std::move(extracted);
         }
     }
@@ -57,4 +59,14 @@ void GameObject::dispatchEvent(const Event* event) {
             component->onEvent(event);
         }
     }
+}
+
+void GameObject::attachComponent(Component* component, bool isGameObject) {
+    component->owner = this;
+    if (isGameObject) {
+        children.push_back(component);
+    } else {
+        component->transform = transform;
+    }
+    component->onAttach();
 }

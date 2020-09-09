@@ -14,17 +14,22 @@
 #include "events.h"
 
 class GameObject; // Forward definition, gameobject needs access to Component class
+class Transform;
 
 class Component {
 protected:
     GameObject* owner = nullptr;
+    Transform* transform = nullptr;
 public:
     GameObject* getOwner() const;
+    Transform* getTransform() const;
 
-    virtual void onAttach(GameObject* new_owner) {owner = new_owner;};
+    virtual void onAttach(){};
     virtual void onUpdate(){};
     virtual void onFixed(){};
     virtual void onEvent(const Event* event){};
+
+    friend class GameObject;
 
     ~Component();
 };

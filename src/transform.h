@@ -12,11 +12,8 @@
 
 class Transform : public Component {
 public:
-    void onAttach(GameObject*) override;
     Geometry local_geometry;
-
     Geometry globalGeometry() const;
-    ~Transform();
 };
 
 

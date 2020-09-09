@@ -14,7 +14,7 @@ private:
 public:
     rectf collision;
     void onEvent(const Event* event) override;
-    void onAttach(GameObject* owner) override;
+    void onAttach() override;
     bool isInside(vec2f);
 
     Collider();

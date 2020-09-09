@@ -18,7 +18,7 @@ public:
     Sprite sprite;
     SpriteRenderer(Sprite);
 
-    void onAttach(GameObject*) override;
+    void onAttach() override;
     void onUpdate() override;
     int getFrame() const;
 };

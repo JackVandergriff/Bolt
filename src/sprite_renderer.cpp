@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-void SpriteRenderer::onAttach(GameObject* g) {
+void SpriteRenderer::onAttach() {
     transform = owner->getComponent<Transform>();
     if (transform == nullptr) {
         throw "No transform on Object";

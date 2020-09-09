@@ -13,7 +13,7 @@ private:
     Transform* transform;
 public:
     static inline Camera* main = nullptr;
-    void onAttach(GameObject *new_owner) override;
+    void onAttach() override;
     Camera();
 };
 

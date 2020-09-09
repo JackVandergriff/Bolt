@@ -4,7 +4,7 @@
 
 #include "camera.h"
 
-void Camera::onAttach(GameObject* new_owner) {
+void Camera::onAttach() {
     transform = owner->getComponent<Transform>();
 }
 

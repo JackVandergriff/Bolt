@@ -15,7 +15,7 @@ private:
 public:
     Text text;
 
-    void onAttach(GameObject* g) override;
+    void onAttach() override;
     void onUpdate() override;
 };
 

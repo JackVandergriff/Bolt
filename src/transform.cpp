@@ -4,16 +4,6 @@
 
 #include "transform.h"
 
-#include <iostream>
-
-void Transform::onAttach(GameObject* g) {
-    std::cout << "Attached to: " << owner->name << std::endl;
-}
-
-Transform::~Transform() {
-    std::cout << "Transform destroyed" << std::endl;
-}
-
 Geometry Transform::globalGeometry() const {
     GameObject* cur_owner = owner;
     Geometry global_geometry;

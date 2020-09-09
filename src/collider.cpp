@@ -19,7 +19,7 @@ void Collider::onEvent(const Event* event) {
     }
 }
 
-void Collider::onAttach(GameObject* owner) {
+void Collider::onAttach() {
     transform = owner->getComponent<Transform>();
 }
 

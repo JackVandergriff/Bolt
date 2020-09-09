@@ -13,3 +13,7 @@ GameObject *Component::getOwner() const {
 Component::~Component() {
     WindowManager::unregisterHandler(this);
 }
+
+Transform* Component::getTransform() const {
+    return transform;
+}
