@@ -1,18 +1,20 @@
 language: cpp
-dist: bionic
 
 matrix:
   include:
     - env: STD_VERSION=20 CXX_COMPILER=g++-10 CC_COMPILER=gcc-10
+      os: linux
+      dist: bionic
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-10
-      compiler:
-        - gcc
+      compiler: gcc
     - env: STD_VERSION=20 CXX_COMPILER=clang-10 CC_COMPILER=clang-10
+      os: linux
+      dist: bionic
       addons:
         apt:
           sources:
@@ -21,14 +23,20 @@ matrix:
           packages:
             - clang-10
             - g++-10
-      compiler:
-        - clang
+      compiler: clang
     - env: STD_VERSION=17 CXX_COMPILER=g++-7 CC_COMPILER=gcc-7
+      os: linux
+      dist: bionic
       compiler:
         - gcc
     - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7
-      compiler:
-        - clang
+      os: linux
+      dist: bionic
+      compiler: clang
+    - env: STD_VERSION=17
+      os: osx
+      osx_image: xcode11
+      compiler: clang
 
 before_script:
   - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; fi
