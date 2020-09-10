@@ -12,9 +12,7 @@ endif()
 message("using compiler: ${CMAKE_CXX_COMPILER}")
 
 include_directories(extras/SDL2/include)
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    link_directories(extras/SDL2/lib)
-endif()
+link_directories(extras/SDL2/lib)
 
 include(GenerateExportHeader)
 
