@@ -12,7 +12,9 @@ endif()
 message("using compiler: ${CMAKE_CXX_COMPILER}")
 
 include_directories(extras/SDL2/include)
-link_directories(extras/SDL2/lib)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    link_directories(extras/SDL2/lib)
+endif()
 
 include(GenerateExportHeader)
 
@@ -22,14 +24,9 @@ set_target_properties(Bolt PROPERTIES VERSION 0.0.1)
 #set_target_properties(Bolt PROPERTIES PUBLIC_HEADER src/bolt.h)
 
 target_link_libraries(Bolt)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    message("Using Apple Clang, not attempting to link SDL")
-else()
-    message("Linking SDL2")
-    target_link_libraries(Bolt SDL2)
-    target_link_libraries(Bolt SDL2_image)
-    target_link_libraries(Bolt SDL2_ttf)
-endif()
+target_link_libraries(Bolt SDL2)
+target_link_libraries(Bolt SDL2_image)
+target_link_libraries(Bolt SDL2_ttf)
 
 install(TARGETS Bolt
         LIBRARY DESTINATION /home/jack/Documents/Bolt/out/lib

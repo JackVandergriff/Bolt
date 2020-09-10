@@ -27,6 +27,9 @@ matrix:
     - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7
       compiler: clang
     - env: STD_VERSION=17
+      addons:
+        homebrew:
+          packages: sdl2
       os: osx
       osx_image: xcode11.4
       compiler: clang
