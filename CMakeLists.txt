@@ -22,9 +22,14 @@ set_target_properties(Bolt PROPERTIES VERSION 0.0.1)
 #set_target_properties(Bolt PROPERTIES PUBLIC_HEADER src/bolt.h)
 
 target_link_libraries(Bolt)
-target_link_libraries(Bolt SDL2)
-target_link_libraries(Bolt SDL2_image)
-target_link_libraries(Bolt SDL2_ttf)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    message("Using Apple Clang, not attempting to link SDL")
+else()
+    message("Linking SDL2")
+    target_link_libraries(Bolt SDL2)
+    target_link_libraries(Bolt SDL2_image)
+    target_link_libraries(Bolt SDL2_ttf)
+endif()
 
 install(TARGETS Bolt
         LIBRARY DESTINATION /home/jack/Documents/Bolt/out/lib
