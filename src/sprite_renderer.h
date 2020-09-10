@@ -9,19 +9,22 @@
 #include "sprite.h"
 #include "game_object.h"
 
-class SpriteRenderer : public Component {
-private:
-    Transform* transform;
-public:
-    int frame{0};
-    vec2f center;
-    Sprite sprite;
-    SpriteRenderer(Sprite);
+namespace Bolt {
 
-    void onAttach() override;
-    void onUpdate() override;
-    int getFrame() const;
-};
+    class SpriteRenderer : public Component {
+    private:
+        Transform* transform;
+    public:
+        int frame{0};
+        vec2f center;
+        Sprite sprite;
+        SpriteRenderer(Sprite);
 
+        void onAttach() override;
+        void onUpdate() override;
+        int getFrame() const;
+    };
+
+}
 
 #endif //BOLT_SPRITE_RENDERER_H

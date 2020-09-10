@@ -13,29 +13,33 @@
 
 #include "events.h"
 
-class GameObject; // Forward definition, gameobject needs access to Component class
-class Transform;
+namespace Bolt {
 
-class Component {
-protected:
-    GameObject* owner = nullptr;
-    Transform* transform = nullptr;
-public:
-    GameObject* getOwner() const;
-    Transform* getTransform() const;
+    class GameObject; // Forward definition, gameobject needs access to Component class
+    class Transform;
 
-    virtual void onAttach(){};
-    virtual void onUpdate(){};
-    virtual void onFixed(){};
-    virtual void onEvent(const Event* event){};
+    class Component {
+    protected:
+        GameObject* owner = nullptr;
+        Transform* transform = nullptr;
+    public:
+        GameObject* getOwner() const;
+        Transform* getTransform() const;
 
-    friend class GameObject;
+        virtual void onAttach() {};
+        virtual void onUpdate() {};
+        virtual void onFixed() {};
+        virtual void onEvent(const Event* event) {};
 
-    ~Component();
-};
+        friend class GameObject;
+
+        ~Component();
+    };
 
 #if __cplusplus > 201703L // C++20 support
-template<class T> concept ComponentType = std::is_base_of<Component, T>::value;
+    template<class T> concept ComponentType = std::is_base_of<Component, T>::value;
 #endif
+
+}
 
 #endif //BOLT_COMPONENT_H

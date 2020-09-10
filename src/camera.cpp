@@ -4,6 +4,8 @@
 
 #include "camera.h"
 
+using namespace Bolt;
+
 void Camera::onAttach() {
     transform = owner->getComponent<Transform>();
 }

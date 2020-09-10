@@ -5,7 +5,9 @@
 #include "utility.h"
 #include "geometry.h"
 
-bool inRect(const vec2<float> point, const rotated_rectf rect) {
+using namespace Bolt;
+
+bool Bolt::inRect(const vec2<float> point, const rotated_rectf rect) {
     return inRect(applyGeometry(point, Geometry{rect.getTopLeft(), rect.rotation, 1}), rect.raw_rect);
 }
 

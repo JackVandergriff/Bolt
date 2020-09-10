@@ -9,15 +9,18 @@
 #include "transform.h"
 #include "game_object.h"
 
-class TextRenderer : public Component {
-private:
-    Transform* transform;
-public:
-    Text text;
+namespace Bolt {
 
-    void onAttach() override;
-    void onUpdate() override;
-};
+    class TextRenderer : public Component {
+    private:
+        Transform* transform;
+    public:
+        Text text;
 
+        void onAttach() override;
+        void onUpdate() override;
+    };
+
+}
 
 #endif //BOLT_TEXT_RENDERER_H

@@ -5,6 +5,8 @@
 #include "text.h"
 #include "window_manager.h"
 
+using namespace Bolt;
+
 void Text::renderText() {
     SDL_Surface* textSurface = TTF_RenderText_Blended(font->getFont(), text.c_str(), SDL_Color{255, 255, 255, 255});
     rendered_text = WindowManager::createTextureFromSurface(textSurface);

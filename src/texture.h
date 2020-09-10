@@ -8,22 +8,25 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-class Texture {
-private:
-    SDL_Texture* texture;
-public:
-    SDL_Texture* getTexture() const;
+namespace Bolt {
 
-    explicit Texture(SDL_Texture* t) : texture(t){};
-    ~Texture();
+    class Texture {
+    private:
+        SDL_Texture* texture;
+    public:
+        SDL_Texture* getTexture() const;
 
-    //Make Non-copyable, likely to pass around as shared_ptr
-    Texture() = delete;
-    Texture(const Texture&) = delete;
-    Texture& operator=(const Texture&) = delete;
-    Texture(Texture&&) noexcept = default;
-    Texture& operator=(Texture&&) = default;
-};
+        explicit Texture(SDL_Texture* t) : texture(t) {};
+        ~Texture();
 
+        //Make Non-copyable, likely to pass around as shared_ptr
+        Texture() = delete;
+        Texture(const Texture &) = delete;
+        Texture &operator=(const Texture &) = delete;
+        Texture(Texture &&) noexcept = default;
+        Texture &operator=(Texture &&) = default;
+    };
+
+}
 
 #endif //BOLT_TEXTURE_H

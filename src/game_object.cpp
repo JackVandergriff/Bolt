@@ -5,6 +5,8 @@
 #include "game_object.h"
 #include "window_manager.h"
 
+using namespace Bolt;
+
 void GameObject::update() {
     for (auto& component : components) {
         component->onUpdate();

@@ -6,6 +6,8 @@
 #include "transform.h"
 #include "window_manager.h"
 
+using namespace Bolt;
+
 Collider::Collider() {
     WindowManager::registerHandler(this, Events::MOUSEBUTTON);
 }

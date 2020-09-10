@@ -4,6 +4,8 @@
 
 #include "sprite.h"
 
+using namespace Bolt;
+
 Sprite::Sprite(std::shared_ptr<Texture> texture, rectf pos, int frames) : texture(texture) {
     if (pos.h == 0 || pos.w == 0) {
         int w, h;

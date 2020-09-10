@@ -10,11 +10,14 @@
 #include "geometry.h"
 #include "utility.h"
 
-class Transform : public Component {
-public:
-    Geometry local_geometry;
-    Geometry globalGeometry() const;
-};
+namespace Bolt {
 
+    class Transform : public Component {
+    public:
+        Geometry local_geometry;
+        Geometry globalGeometry() const;
+    };
+
+}
 
 #endif //BOLT_TRANSFORM_H

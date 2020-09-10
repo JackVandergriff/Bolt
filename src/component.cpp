@@ -6,6 +6,8 @@
 #include "game_object.h"
 #include "window_manager.h"
 
+using namespace Bolt;
+
 GameObject *Component::getOwner() const {
     return owner;
 }

@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+using namespace Bolt;
+
 WindowManager::WindowManager(std::string title) {
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);

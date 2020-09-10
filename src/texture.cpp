@@ -4,6 +4,8 @@
 
 #include "texture.h"
 
+using namespace Bolt;
+
 Texture::~Texture() {
     if (texture != nullptr)
         SDL_DestroyTexture(texture);

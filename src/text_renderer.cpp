@@ -5,6 +5,8 @@
 #include "text_renderer.h"
 #include "window_manager.h"
 
+using namespace Bolt;
+
 void TextRenderer::onAttach() {
     transform = owner->getComponent<Transform>();
 }

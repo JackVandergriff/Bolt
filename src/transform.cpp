@@ -4,6 +4,8 @@
 
 #include "transform.h"
 
+using namespace Bolt;
+
 Geometry Transform::globalGeometry() const {
     GameObject* cur_owner = owner;
     Geometry global_geometry;

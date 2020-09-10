@@ -10,56 +10,60 @@
 
 #include "utility.h"
 
-enum class Events {
-    UNUSED, KEYBOARD, MOUSEBUTTON, MOUSEMOTION, MOUSEWHEEL, COLLISION
-    //KEYDOWN, KEYUP, MOUSEDOWN, MOUSEUP, MOUSEMOVE, MOUSEWHEEL, UNUSED, COLLISION
-};
+namespace Bolt {
 
-struct Event {
-protected:
-    virtual void wow_this_is_polymorphic_see(){};
-public:
-    const Events type{Events::UNUSED};
-    Event(Events);
-    Event() = default;
-};
+    enum class Events {
+        UNUSED, KEYBOARD, MOUSEBUTTON, MOUSEMOTION, MOUSEWHEEL, COLLISION
+        //KEYDOWN, KEYUP, MOUSEDOWN, MOUSEUP, MOUSEMOVE, MOUSEWHEEL, UNUSED, COLLISION
+    };
 
-struct KeyEvent : public Event {
-public:
-    uint keyCode;
-    uint16_t modifiers;
-    bool pressed;
-    bool repeated;
+    struct Event {
+    protected:
+        virtual void wow_this_is_polymorphic_see() {};
+    public:
+        const Events type{Events::UNUSED};
+        Event(Events);
+        Event() = default;
+    };
 
-    KeyEvent(SDL_KeyboardEvent);
-};
+    struct KeyEvent : public Event {
+    public:
+        uint keyCode;
+        uint16_t modifiers;
+        bool pressed;
+        bool repeated;
 
-struct MouseButtonEvent : public Event {
-    uint8_t button;
-    uint8_t num_clicks;
-    vec2<int32_t> pos;
-    bool pressed;
+        KeyEvent(SDL_KeyboardEvent);
+    };
 
-    MouseButtonEvent(SDL_MouseButtonEvent);
-};
+    struct MouseButtonEvent : public Event {
+        uint8_t button;
+        uint8_t num_clicks;
+        vec2<int32_t> pos;
+        bool pressed;
 
-struct MouseMotionEvent : public Event {
-    vec2<int32_t> pos;
-    vec2<int32_t> motion;
+        MouseButtonEvent(SDL_MouseButtonEvent);
+    };
 
-    MouseMotionEvent(SDL_MouseMotionEvent);
-};
+    struct MouseMotionEvent : public Event {
+        vec2<int32_t> pos;
+        vec2<int32_t> motion;
 
-struct MouseWheelEvent : public Event {
-    int32_t scroll_horizontal;
-    int32_t scroll_vertical;
-    bool normal_scroll_direction;
+        MouseMotionEvent(SDL_MouseMotionEvent);
+    };
 
-    MouseWheelEvent(SDL_MouseWheelEvent);
-};
+    struct MouseWheelEvent : public Event {
+        int32_t scroll_horizontal;
+        int32_t scroll_vertical;
+        bool normal_scroll_direction;
 
-Events getEventFromSDL(Uint32 t);
+        MouseWheelEvent(SDL_MouseWheelEvent);
+    };
 
-std::unique_ptr<Event> translateEvent(SDL_Event);
+    Events getEventFromSDL(Uint32 t);
+
+    std::unique_ptr<Event> translateEvent(SDL_Event);
+
+}
 
 #endif //BOLT_EVENTS_H

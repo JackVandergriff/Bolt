@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+using namespace Bolt;
+
 void SpriteRenderer::onAttach() {
     transform = owner->getComponent<Transform>();
     if (transform == nullptr) {

@@ -6,7 +6,9 @@
 
 #include <map>
 
-Events getEventFromSDL(Uint32 sdl_event) {
+using namespace Bolt;
+
+Events Bolt::getEventFromSDL(Uint32 sdl_event) {
     static std::map<Uint32, Events> EventLookup{
             {SDL_KEYDOWN, Events::KEYBOARD},
             {SDL_KEYUP, Events::KEYBOARD},
@@ -45,7 +47,7 @@ MouseWheelEvent::MouseWheelEvent(SDL_MouseWheelEvent sdl_event) : Event(Events::
     scroll_vertical(sdl_event.y),
     normal_scroll_direction(sdl_event.direction == SDL_MOUSEWHEEL_NORMAL) {}
 
-std::unique_ptr<Event> translateEvent(SDL_Event event) {
+std::unique_ptr<Event> Bolt::translateEvent(SDL_Event event) {
     switch (getEventFromSDL(event.type)) {
         case Events::KEYBOARD:
             return std::make_unique<KeyEvent>(event.key);
