@@ -24,9 +24,9 @@ matrix:
       compiler: clang
     - env: STD_VERSION=17 CXX_COMPILER=g++-7 CC_COMPILER=gcc-7
       compiler: gcc
-    - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7
+    - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7 CXX_FLAGS="-stdlib=libc++ -lc++fs"
       compiler: clang
-    - env: STD_VERSION=17
+    - env: STD_VERSION=17 CXX_FLAGS="-L/usr/local/Cellar/sdl2/lib"
       addons:
         homebrew:
           packages: sdl2
@@ -37,7 +37,6 @@ matrix:
 before_script:
   - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; fi
   - if [[ "${CC_COMPILER}" != "" ]]; then export CC=${CC_COMPILER}; fi
-  - test "$CC" = "clang-7" && export CXX_FLAGS="-stdlib=libc++ -lc++fs" || true
 
 script:
   - cmake -DCMAKE_CXX_FLAGS="$CXX_FLAGS" .
