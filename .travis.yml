@@ -29,7 +29,10 @@ matrix:
     - env: STD_VERSION=17 CXX_FLAGS="-L/usr/local/Cellar/sdl2/2.0.12_1/lib"
       addons:
         homebrew:
-          packages: sdl2
+          packages:
+            - sdl2
+            - sdl2_image
+            - sdl2_ttf
       os: osx
       osx_image: xcode11.4
       compiler: clang
