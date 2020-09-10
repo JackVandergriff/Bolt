@@ -12,7 +12,7 @@ matrix:
             - g++-10
       compiler:
         - gcc
-    - env: STD_VERSION=20 CXX_COMPILER=clang++-10 CC_COMPILER=clang-10
+    - env: STD_VERSION=20 CXX_COMPILER=clang-10 CC_COMPILER=clang-10
       addons:
         apt:
           sources:
@@ -20,6 +20,7 @@ matrix:
             - llvm-toolchain-bionic-10
           packages:
             - clang-10
+            - g++-10
       compiler:
         - clang
     - env: STD_VERSION=17 CXX_COMPILER=g++-7 CC_COMPILER=gcc-7
