@@ -1,8 +1,5 @@
 language: cpp
 dist: bionic
-compiler:
-  - clang
-  - gcc
 
 matrix:
   include:
@@ -15,20 +12,20 @@ matrix:
             - g++-10
       compiler:
         - gcc
-    - env: STD_VERSION=20 CXX_COMPILER=clang++-10 CC_COMPILER=clang-10
+    - env: STD_VERSION=20 CXX_COMPILER=clang++-11 CC_COMPILER=clang-11
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-bionic-10
+            - llvm-toolchain-bionic-11
           packages:
-            - clang-10
+            - clang-11
       compiler:
         - clang
     - env: STD_VERSION=17 CXX_COMPILER=g++-7 CC_COMPILER=gcc-7
       compiler:
         - gcc
-    - env: STD_VERSION=17 CXX_COMPILER=clang++-7 CC_COMPILER=clang-7
+    - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7
       compiler:
         - clang
 
