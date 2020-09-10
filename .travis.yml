@@ -26,7 +26,7 @@ matrix:
       compiler: gcc
     - env: STD_VERSION=17 CXX_COMPILER=clang++ CC_COMPILER=clang-7 CXX_FLAGS="-stdlib=libc++ -lc++fs"
       compiler: clang
-    - env: STD_VERSION=17 CXX_FLAGS="-L/usr/local/Cellar/sdl2/lib"
+    - env: STD_VERSION=17 CXX_FLAGS="-L/usr/local/Cellar/sdl2/2.0.12_1/lib"
       addons:
         homebrew:
           packages: sdl2
