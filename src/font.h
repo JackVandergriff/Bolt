@@ -6,14 +6,14 @@
 #define BOLT_FONT_H
 
 #include <SDL_ttf.h>
-#include <filesystem>
+#include "filesystem_includes.h"
 
 class Font {
 private:
     TTF_Font* font;
 public:
     TTF_Font* getFont();
-    Font(std::filesystem::path path, int size);
+    Font(fs::path path, int size);
     ~Font();
 };
 

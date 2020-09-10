@@ -8,7 +8,7 @@ TTF_Font* Font::getFont() {
     return font;
 }
 
-Font::Font(std::filesystem::path path, int size) {
+Font::Font(fs::path path, int size) {
     font = TTF_OpenFont(path.c_str(), size);
 }
 
