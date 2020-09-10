@@ -8,6 +8,7 @@
 #include "texture.h"
 #include "sprite_renderer.h"
 #include "events.h"
+#include "filesystem_includes.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -15,7 +16,6 @@
 #include <memory>
 #include <map>
 #include <set>
-#include <filesystem>
 #include <string>
 
 struct Renderable {
@@ -39,7 +39,7 @@ public:
     WindowManager();
     ~WindowManager();
 
-    static std::shared_ptr<Texture> loadTexture(std::filesystem::path);
+    static std::shared_ptr<Texture> loadTexture(fs::path);
     static vec2f getMousePos(bool screenSpace = false);
     static std::shared_ptr<Texture> createTextureFromSurface(SDL_Surface* surface);
     static void render(Renderable to_render);

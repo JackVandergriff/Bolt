@@ -30,7 +30,7 @@ WindowManager::~WindowManager() {
     SDL_Quit();
 }
 
-std::shared_ptr<Texture> WindowManager::loadTexture(std::filesystem::path path) {
+std::shared_ptr<Texture> WindowManager::loadTexture(fs::path path) {
     SDL_Surface* textureSurface = IMG_Load(path.c_str());
     SDL_Texture* texture = SDL_CreateTextureFromSurface(singleton->renderer, textureSurface);
     SDL_FreeSurface(textureSurface);
