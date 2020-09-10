@@ -4,7 +4,39 @@ compiler:
   - clang
   - gcc
 
+matrix:
+  include:
+    - env: STD_VERSION=20 CXX_COMPILER=g++-10 CC_COMPILER=gcc-10
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-10
+      compiler:
+        - gcc
+    - env: STD_VERSION=20 CXX_COMPILER=clang++-10 CC_COMPILER=clang-10
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-bionic-10
+          packages:
+            - clang-10
+      compiler:
+        - clang
+    - env: STD_VERSION=17 CXX_COMPILER=g++-7 CC_COMPILER=gcc-7
+      compiler:
+        - gcc
+    - env: STD_VERSION=17 CXX_COMPILER=clang++-7 CC_COMPILER=clang-7
+      compiler:
+        - clang
+
+before_script:
+  - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; fi
+  - if [[ "${CC_COMPILER}" != "" ]]; then export CC=${CC_COMPILER}; fi
+  - test "$CC" = "clang-7" && export CXX_FLAGS="-stdlib=libc++ -lc++fs" || true
+
 script:
-  - test "$CC" = "clang" && export CXX_FLAGS="-stdlib=libc++ -lc++fs" || true
   - cmake -DCMAKE_CXX_FLAGS="$CXX_FLAGS" .
   - cmake --build .
