@@ -33,7 +33,7 @@ matrix:
 before_script:
   - if [[ "${CXX_COMPILER}" != "" ]]; then export CXX=${CXX_COMPILER}; fi
   - if [[ "${CC_COMPILER}" != "" ]]; then export CC=${CC_COMPILER}; fi
-  - test "$CC" = "clang-7" && export CXX_FLAGS="${CXX_FLAGS} -lc++fs" || true
+  - test "$CC" = "clang-7" && export CXX_FLAGS="-stdlib=libc++ -lc++fs" || true
 
 script:
   - cmake -DCMAKE_CXX_FLAGS="$CXX_FLAGS" .
