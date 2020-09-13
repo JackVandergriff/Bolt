@@ -42,27 +42,28 @@ void Animation::setFrame(int new_frame) {
     frame = new_frame % size();
 }
 
-Animation Bolt::generateTrivialAnimation(const Texture* texture) {
+Animation Bolt::generateTrivialAnimation(const std::shared_ptr<Texture>& texture) {
     recti position;
     SDL_QueryTexture(texture->getTexture(), nullptr, nullptr, &position.w, &position.h);
     return Animation(position);
 }
 
-Animation Bolt::generateSimpleAnimation(const Texture* texture, recti size, vec2i upper_corner, int num_frames) {
+Animation Bolt::generateSimpleAnimation(const std::shared_ptr<Texture>& texture, recti first_frame, int num_frames) {
     vec2i extents;
     SDL_QueryTexture(texture->getTexture(), nullptr, nullptr, &extents.x, &extents.y);
 
-    vec2i advance_by{size.w, 0};
+    vec2i advance_by{first_frame.w, 0};
+    vec2i offset;
     Animation to_return;
 
     if (num_frames == 0) num_frames = INT16_MAX;
     for (int i = 0; i < num_frames; ++i) {
-        to_return.addFrame(size + upper_corner);
-        upper_corner += advance_by;
-        if ((upper_corner.x + size.w) > extents.x) {
-            upper_corner.x = 0;
-            upper_corner.y += size.h;
-            if ((upper_corner.y + size.h) > extents.y) {
+        to_return.addFrame(first_frame + offset);
+        offset += advance_by;
+        if ((offset.x + first_frame.w) > extents.x) {
+            offset.x = 0;
+            offset.y += first_frame.h;
+            if ((offset.y + first_frame.h) > extents.y) {
                 break;
             }
         }

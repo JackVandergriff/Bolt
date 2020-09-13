@@ -6,6 +6,7 @@
 #define BOLT_ANIMATION_H
 
 #include <vector>
+#include <memory>
 
 #include "texture.h"
 #include "utility.h"
@@ -33,8 +34,8 @@ namespace Bolt {
         Animation() = default;
     };
 
-    Animation generateTrivialAnimation(const Texture* texture);
-    Animation generateSimpleAnimation(const Texture* texture, recti size, vec2i upper_corner = {}, int num_frames = 0);
+    Animation generateTrivialAnimation(const std::shared_ptr<Texture>& texture);
+    Animation generateSimpleAnimation(const std::shared_ptr<Texture>& texture, recti first_frame, int num_frames = 0);
 }
 
 #endif //BOLT_ANIMATION_H
