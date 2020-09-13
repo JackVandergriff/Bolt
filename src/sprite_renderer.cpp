@@ -23,7 +23,7 @@ int SpriteRenderer::getFrame() const {
 SpriteRenderer::SpriteRenderer(Sprite s) : sprite(s){}
 
 void SpriteRenderer::onUpdate() {
-    auto source = sprite.getSource();
+    rectf source = sprite.getSource(); // Force conversion to rectf for source - center calculation
     auto dest = stripGeometry(source - center, transform->globalGeometry());
     if (frame > 0 && frame <= sprite.getFrames()) source.x += (frame - 1) * source.w;
     WindowManager::render({sprite.getTexture(), source, dest});

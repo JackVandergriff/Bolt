@@ -3,28 +3,24 @@
 //
 
 #include "sprite.h"
+#include "animation.h"
 
 using namespace Bolt;
 
-Sprite::Sprite(std::shared_ptr<Texture> texture, rectf pos, int frames) : texture(texture) {
-    if (pos.h == 0 || pos.w == 0) {
-        int w, h;
-        SDL_QueryTexture(texture->getTexture(), nullptr, nullptr, &w, &h);
-        source = {0, 0, (float)w, (float)h};
-    } else {
-        source = pos;
-    }
-    this->frames = frames;
-}
-
 int Sprite::getFrames() const {
-    return frames;
+    return animations[animation_index].size();
 }
 
 SDL_Texture* Sprite::getTexture() const {
     return texture.get()->getTexture();
 }
 
-rectf Sprite::getSource() const {
-    return source;
+recti Sprite::getSource() const {
+    return animations[animation_index].getFrame();
+}
+
+Sprite::Sprite(std::shared_ptr<Texture> texture, std::vector<Animation> animations) : texture(texture), animations(animations) {}
+
+void Sprite::addAnimation(Animation animation) {
+    animations.push_back(animation);
 }

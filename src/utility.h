@@ -40,6 +40,8 @@ namespace Bolt {
 
         template<typename T2>
         explicit operator rect<T2>() const;
+        template<typename T2, class = typename std::enable_if_t<std::is_floating_point_v<T2> && std::is_integral_v<T>>>
+        operator rect<T2>() const;
         explicit operator SDL_Rect() const;
 
         rect<T>() = default;
@@ -84,6 +86,12 @@ namespace Bolt {
 
     template<typename T>
     template<typename T2>
+    rect<T>::operator rect<T2>() const {
+        return rect<T2>{static_cast<T2>(x), static_cast<T2>(y), static_cast<T2>(w), static_cast<T2>(h)};
+    }
+
+    template<typename T>
+    template<typename T2, class>
     rect<T>::operator rect<T2>() const {
         return rect<T2>{static_cast<T2>(x), static_cast<T2>(y), static_cast<T2>(w), static_cast<T2>(h)};
     }

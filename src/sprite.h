@@ -6,24 +6,28 @@
 #define BOLT_SPRITE_H
 
 #include "texture.h"
+#include "animation.h"
 #include "utility.h"
 
 #include <memory>
+#include <vector>
 
 namespace Bolt {
 
     class Sprite {
     private:
         std::shared_ptr<Texture> texture;
-        rectf source;
-        int frames;
+        std::vector<Animation> animations;
     public:
-        Sprite(std::shared_ptr<Texture>, rectf= {0, 0, 0, 0}, int= 0);
-
+        int animation_index{0};
         float scale{1.0f};
+
+        Sprite(std::shared_ptr<Texture> texture, std::vector<Animation> animations);
+        void addAnimation(Animation animation);
+
         int getFrames() const;
         SDL_Texture* getTexture() const;
-        rectf getSource() const;
+        recti getSource() const;
     };
 
 }
