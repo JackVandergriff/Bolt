@@ -20,6 +20,7 @@ namespace Bolt {
     public:
         recti operator[](int index) const;
         recti getFrame() const;
+        recti getFrameSize() const;
         int size() const;
 
         void advance();

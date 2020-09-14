@@ -28,6 +28,7 @@ namespace Bolt {
         int getFrames() const;
         SDL_Texture* getTexture() const;
         recti getSource() const;
+        Animation& getAnimation();
     };
 
 }

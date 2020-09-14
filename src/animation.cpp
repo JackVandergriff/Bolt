@@ -42,6 +42,10 @@ void Animation::setFrame(int new_frame) {
     frame = new_frame % size();
 }
 
+recti Animation::getFrameSize() const {
+    return {0, 0, frames[0].w, frames[0].h};
+}
+
 Animation Bolt::generateTrivialAnimation(const std::shared_ptr<Texture>& texture) {
     recti position;
     SDL_QueryTexture(texture->getTexture(), nullptr, nullptr, &position.w, &position.h);

@@ -9,22 +9,14 @@
 
 using namespace Bolt;
 
-void SpriteRenderer::onAttach() {
-    transform = owner->getComponent<Transform>();
-    if (transform == nullptr) {
-        throw "No transform on Object";
-    }
-}
-
-int SpriteRenderer::getFrame() const {
-    return frame;
-}
-
 SpriteRenderer::SpriteRenderer(Sprite s) : sprite(s){}
 
 void SpriteRenderer::onUpdate() {
-    rectf source = sprite.getSource(); // Force conversion to rectf for source - center calculation
-    auto dest = stripGeometry(source - center, transform->globalGeometry());
-    if (frame > 0 && frame <= sprite.getFrames()) source.x += (frame - 1) * source.w;
-    WindowManager::render({sprite.getTexture(), source, dest});
+    if (updates_per_frame > 0) {
+        frame_counter = (frame_counter + 1) % updates_per_frame;
+        if (frame_counter == 0) sprite.getAnimation().advance();
+    }
+    rectf local = sprite.getAnimation().getFrameSize(); // Force conversion to rectf for source - center calculation
+    auto dest = stripGeometry(local - center, transform->globalGeometry());
+    WindowManager::render({sprite.getTexture(), sprite.getSource(), dest});
 }

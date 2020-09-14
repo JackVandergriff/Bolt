@@ -24,3 +24,7 @@ Sprite::Sprite(std::shared_ptr<Texture> texture, std::vector<Animation> animatio
 void Sprite::addAnimation(Animation animation) {
     animations.push_back(animation);
 }
+
+Animation& Sprite::getAnimation() {
+    return animations[animation_index];
+}

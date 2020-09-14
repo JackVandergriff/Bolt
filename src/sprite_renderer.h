@@ -13,16 +13,14 @@ namespace Bolt {
 
     class SpriteRenderer : public Component {
     private:
-        Transform* transform;
+        int frame_counter;
     public:
-        int frame{0};
+        int updates_per_frame{0};
         vec2f center;
         Sprite sprite;
         SpriteRenderer(Sprite);
 
-        void onAttach() override;
         void onUpdate() override;
-        int getFrame() const;
     };
 
 }
