@@ -6,10 +6,6 @@
 
 using namespace Bolt;
 
-void Camera::onAttach() {
-    transform = owner->getComponent<Transform>();
-}
-
 Camera::Camera() {
     if (!main) main = this;
 }

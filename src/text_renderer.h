@@ -12,12 +12,9 @@
 namespace Bolt {
 
     class TextRenderer : public Component {
-    private:
-        Transform* transform;
     public:
         Text text;
 
-        void onAttach() override;
         void onUpdate() override;
     };
 

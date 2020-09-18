@@ -7,10 +7,6 @@
 
 using namespace Bolt;
 
-void TextRenderer::onAttach() {
-    transform = owner->getComponent<Transform>();
-}
-
 void TextRenderer::onUpdate() {
     rectf source = {{0, 0}, text.getDimensions()};
     WindowManager::render(Renderable{text.getRenderedText(), source, stripGeometry(source, transform->globalGeometry()), true});
