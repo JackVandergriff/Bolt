@@ -11,7 +11,7 @@ endif()
 
 message("using compiler: ${CMAKE_CXX_COMPILER}")
 
-#option(BUILD_SHARED "Build and install the shared library" ON)
+option(BUILD_SHARED "Build and install the shared library" ON)
 option(BUILD_STATIC "Build and install the static library" ON)
 option(INSTALL_STATIC "Build and install the static library" ON)
 set(LIB_INSTALL_DIR ${CMAKE_CURRENT_LIST_DIR}/extras/Chipmunk2D/lib)
