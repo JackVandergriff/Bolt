@@ -8,9 +8,14 @@
 
 #include <iostream>
 
+namespace chip {
+
 #include <chipmunk/chipmunk.h>
 
+}
+
 using namespace Bolt;
+using namespace chip;
 
 WindowManager::WindowManager(std::string title) {
     cpSpace* test = cpSpaceNew();
