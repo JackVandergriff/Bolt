@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-namespace chip {
+namespace cp {
 
 #include <chipmunk/chipmunk.h>
 
@@ -17,7 +17,7 @@ namespace chip {
 using namespace Bolt;
 
 WindowManager::WindowManager(std::string title) {
-    chip::cpSpace* test = chip::cpSpaceNew();
+    cp::cpSpace* test = cp::cpSpaceNew();
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();
@@ -25,7 +25,7 @@ WindowManager::WindowManager(std::string title) {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     singleton = this;
     flush();
-    chip::cpSpaceFree(test);
+    cp::cpSpaceFree(test);
 }
 
 WindowManager::WindowManager() {
