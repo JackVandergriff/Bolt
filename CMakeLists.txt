@@ -21,7 +21,7 @@ add_subdirectory(extras/Chipmunk2D)
 include_directories(extras/SDL2/include)
 link_directories(extras/SDL2/lib)
 include_directories(extras/Chipmunk2D/include)
-link_directories(extras/Chipmunk2D/lib)
+link_directories(extras/Chipmunk2D/src)
 
 include(GenerateExportHeader)
 
