@@ -10,7 +10,7 @@ Geometry Transform::globalGeometry() const {
     GameObject* cur_owner = owner;
     Geometry global_geometry;
     while (cur_owner != nullptr) {
-        global_geometry = stripGeometry(global_geometry, cur_owner->getComponent<Transform>()->local_geometry);
+        global_geometry = stripGeometry(global_geometry, cur_owner->getTransform()->local_geometry);
         cur_owner = cur_owner->getOwner();
     }
 
