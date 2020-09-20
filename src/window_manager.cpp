@@ -15,10 +15,9 @@ namespace chip {
 }
 
 using namespace Bolt;
-using namespace chip;
 
 WindowManager::WindowManager(std::string title) {
-    cpSpace* test = cpSpaceNew();
+    chip::cpSpace* test = chip::cpSpaceNew();
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();
@@ -26,7 +25,7 @@ WindowManager::WindowManager(std::string title) {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     singleton = this;
     flush();
-    cpSpaceFree(test);
+    chip::cpSpaceFree(test);
 }
 
 WindowManager::WindowManager() {
