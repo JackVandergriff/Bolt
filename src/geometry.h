@@ -13,11 +13,11 @@ namespace Bolt {
 
     struct Geometry {
         vec2f offset{0, 0};
-        float rotation{0};
-        float scale{1};
+        double rotation{0};
+        double scale{1};
 
         Geometry() = default;
-        Geometry(vec2f offset, float rotation, float scale);
+        Geometry(vec2f offset, double rotation, double scale);
 
         friend Geometry applyGeometry(const Geometry &external_geometry, const Geometry &to_apply);
         friend vec2f applyGeometry(const vec2f &external_vec2f, const Geometry &to_apply);
@@ -27,9 +27,9 @@ namespace Bolt {
         friend rotated_rectf stripGeometry(const rectf &local_rect, const Geometry &to_strip);
 
     private:
-        mutable float rot_cache{0};
-        mutable float cos{1};
-        mutable float sin{0};
+        mutable double rot_cache{0};
+        mutable double cos{1};
+        mutable double sin{0};
         void updateCache() const;
     };
 

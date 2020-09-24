@@ -20,7 +20,7 @@ namespace Bolt {
         std::vector<Animation> animations;
     public:
         int animation_index{0};
-        float scale{1.0f};
+        double scale{1.0f};
 
         Sprite(std::shared_ptr<Texture> texture, std::vector<Animation> animations);
         void addAnimation(Animation animation);

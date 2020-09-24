@@ -8,7 +8,7 @@
 
 using namespace Bolt;
 
-Geometry::Geometry(vec2f offset, float rotation, float scale): offset(offset), rotation(rotation), scale(scale) {
+Geometry::Geometry(vec2f offset, double rotation, double scale): offset(offset), rotation(rotation), scale(scale) {
     updateCache();
 }
 
@@ -20,10 +20,10 @@ void Geometry::updateCache() const {
 
 Geometry Bolt::applyGeometry(const Geometry& external_geometry, const Geometry& to_apply) {
     if (to_apply.rotation != to_apply.rot_cache) to_apply.updateCache();
-    float x = external_geometry.offset.x; // would float& be better optimized?? idk
-    float y = external_geometry.offset.y;
-    float x1 = to_apply.offset.x;
-    float y1 = to_apply.offset.y;
+    double x = external_geometry.offset.x; // would double& be better optimized?? idk
+    double y = external_geometry.offset.y;
+    double x1 = to_apply.offset.x;
+    double y1 = to_apply.offset.y;
     return Geometry(
             {((x - x1) * to_apply.cos + (y - y1) * to_apply.sin) / to_apply.scale, (-(x - x1) * to_apply.sin + (y - y1) * to_apply.cos) / to_apply.scale},
             external_geometry.rotation - to_apply.rotation,
@@ -32,10 +32,10 @@ Geometry Bolt::applyGeometry(const Geometry& external_geometry, const Geometry& 
 
 Geometry Bolt::stripGeometry(const Geometry& local_geometry, const Geometry& to_strip) {
     if (to_strip.rotation != to_strip.rot_cache) to_strip.updateCache();
-    float x = local_geometry.offset.x; // would float& be better optimized?? idk
-    float y = local_geometry.offset.y;
-    float x1 = to_strip.offset.x;
-    float y1 = to_strip.offset.y;
+    double x = local_geometry.offset.x; // would double& be better optimized?? idk
+    double y = local_geometry.offset.y;
+    double x1 = to_strip.offset.x;
+    double y1 = to_strip.offset.y;
     return Geometry(
             {to_strip.scale * (x * to_strip.cos - y * to_strip.sin) + x1, to_strip.scale * (y * to_strip.cos + x * to_strip.sin) + y1},
             local_geometry.rotation + to_strip.rotation,

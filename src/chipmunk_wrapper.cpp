@@ -67,19 +67,19 @@ void RigidBody::setType(RBTypes type) {
     }
 }
 
-float RigidBody::getMass() const {
+double RigidBody::getMass() const {
     return cpBodyGetMass(body.get());
 }
 
-void RigidBody::setMass(float mass) {
+void RigidBody::setMass(double mass) {
     cpBodySetMass(body.get(), mass);
 }
 
-float RigidBody::getMoment() const {
+double RigidBody::getMoment() const {
     return cpBodyGetMoment(body.get());
 }
 
-void RigidBody::setMoment(float moment) {
+void RigidBody::setMoment(double moment) {
     cpBodySetMoment(body.get(), moment);
 }
 
@@ -97,7 +97,7 @@ vec2f RigidBody::getPosition() const {
     return {pos.x, pos.y};
 }
 
-float RigidBody::getAngle() const {
+double RigidBody::getAngle() const {
     return cpBodyGetAngle(body.get());
 }
 
@@ -119,19 +119,19 @@ void RigidBody::setForce(vec2f force) {
     cpBodySetForce(body.get(), cp(force));
 }
 
-float RigidBody::getAngularVelocity() const {
+double RigidBody::getAngularVelocity() const {
     return cpBodyGetAngularVelocity(body.get());
 }
 
-void RigidBody::setAngularVelocity(float angular_velocity) {
+void RigidBody::setAngularVelocity(double angular_velocity) {
     cpBodySetAngularVelocity(body.get(), angular_velocity);
 }
 
-float RigidBody::getTorque() const {
+double RigidBody::getTorque() const {
     return cpBodyGetTorque(body.get());
 }
 
-void RigidBody::setTorque(float torque) {
+void RigidBody::setTorque(double torque) {
     cpBodySetTorque(body.get(), torque);
 }
 
@@ -176,13 +176,13 @@ PhysicsSpace &RigidBody::getSpace() const {
     // TODO
 }
 
-PhysicsShape::PhysicsShape(RigidBody &body, float radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {
+PhysicsShape::PhysicsShape(RigidBody &body, double radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {
     shape = std::shared_ptr<cpShape>(cpCircleShapeNew(body.body.get(), radius, cp(offset_from_cog)), [](cpShape* s){
         cpShapeFree(s);
     });
 }
 
-PhysicsShape::PhysicsShape(RigidBody &body, std::pair<vec2f, vec2f> endpoints, float thickness) : type(ShapeTypes::SEGMENT) {
+PhysicsShape::PhysicsShape(RigidBody &body, std::pair<vec2f, vec2f> endpoints, double thickness) : type(ShapeTypes::SEGMENT) {
     shape = std::shared_ptr<cpShape>(cpSegmentShapeNew(body.body.get(), cp(endpoints.first), cp(endpoints.second), thickness), [](cpShape* s){
         cpShapeFree(s);
     });
@@ -223,19 +223,19 @@ void PhysicsShape::setSensor(bool is_sensor) {
     cpShapeSetSensor(shape.get(), is_sensor);
 }
 
-float PhysicsShape::getElasticity() const {
+double PhysicsShape::getElasticity() const {
     return cpShapeGetElasticity(shape.get());
 }
 
-void PhysicsShape::setElasticity(float elasticity) {
+void PhysicsShape::setElasticity(double elasticity) {
     cpShapeSetElasticity(shape.get(), elasticity);
 }
 
-float PhysicsShape::getFriction() const {
+double PhysicsShape::getFriction() const {
     return cpShapeGetFriction(shape.get());
 }
 
-void PhysicsShape::setFriction(float friction) {
+void PhysicsShape::setFriction(double friction) {
     cpShapeSetFriction(shape.get(), friction);
 }
 
@@ -267,7 +267,7 @@ vec2f PhysicsShape::circleGetOffset() const {
     return {off.x, off.y};
 }
 
-float PhysicsShape::circleGetRadius() const {
+double PhysicsShape::circleGetRadius() const {
     if (type != ShapeTypes::CIRCLE) throw "This ain't a circle nor a good error message";
     return cpCircleShapeGetRadius(shape.get());
 }
@@ -285,7 +285,7 @@ vec2f PhysicsShape::segmentGetNormalVector() const {
     return {norm.x, norm.y};
 }
 
-float PhysicsShape::segmentGetThickness() const {
+double PhysicsShape::segmentGetThickness() const {
     if (type != ShapeTypes::SEGMENT) throw "This ain't a segment nor a good error message";
     return cpSegmentShapeGetRadius(shape.get());
 }

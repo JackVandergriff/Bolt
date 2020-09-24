@@ -57,15 +57,15 @@ namespace Bolt {
     };
 
     struct rotated_rectf {
-        rect<float> raw_rect;
-        float rotation{0};
+        rect<double> raw_rect;
+        double rotation{0};
 
-        vec2<float> getTopLeft() const;
-        vec2<float> getBottomRight() const;
+        vec2<double> getTopLeft() const;
+        vec2<double> getBottomRight() const;
 
         rotated_rectf() = default;
-        rotated_rectf(rect<float> rect, float rotation) : raw_rect(rect), rotation(rotation) {}
-        explicit rotated_rectf(rect<float> rect) : raw_rect(rect) {}
+        rotated_rectf(rect<double> rect, double rotation) : raw_rect(rect), rotation(rotation) {}
+        explicit rotated_rectf(rect<double> rect) : raw_rect(rect) {}
     };
 
     template<typename T>
@@ -137,11 +137,11 @@ namespace Bolt {
         return point.x >= rect.x && point.y >= rect.y && point.x <= rect.x + rect.w && point.y <= rect.y + rect.h;
     }
 
-    bool inRect(const vec2<float> point, const rotated_rectf rect);
+    bool inRect(const vec2<double> point, const rotated_rectf rect);
 
-    using vec2f = vec2<float>;
+    using vec2f = vec2<double>;
     using vec2i = vec2<int>;
-    using rectf = rect<float>;
+    using rectf = rect<double>;
     using recti = rect<int>;
 
     template<typename T>

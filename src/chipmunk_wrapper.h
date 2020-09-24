@@ -17,7 +17,7 @@ class cpShape;
 
 namespace Bolt {
 
-    const static inline float PHYSICS_BOX_RADIUS = 0.1f;
+    const static inline double PHYSICS_BOX_RADIUS = 0.1f;
 
     enum class RBTypes {
         DYNAMIC, KINEMATIC, STATIC
@@ -46,22 +46,22 @@ namespace Bolt {
         RBTypes getType() const;
         void setType(RBTypes type);
         PhysicsSpace& getSpace() const; // TODO
-        float getMass() const;
-        void setMass(float mass);
-        float getMoment() const;
-        void setMoment(float moment);
+        double getMass() const;
+        void setMass(double mass);
+        double getMoment() const;
+        void setMoment(double moment);
         vec2f getCenterOfGravity() const;
         void setCenterOfGravity(vec2f center_of_gravity);
         vec2f getPosition() const;
-        float getAngle() const;
+        double getAngle() const;
         vec2f getVelocity() const;
         void setVelocity(vec2f velocity);
         vec2f getForce() const;
         void setForce(vec2f force);
-        float getAngularVelocity() const;
-        void setAngularVelocity(float angular_velocity);
-        float getTorque() const;
-        void setTorque(float torque);
+        double getAngularVelocity() const;
+        void setAngularVelocity(double angular_velocity);
+        double getTorque() const;
+        void setTorque(double torque);
 
         vec2f getVelocityAtPoint(vec2f global_point) const;
         void applyForceAtPoint(vec2f force, vec2f global_point);
@@ -81,8 +81,8 @@ namespace Bolt {
         std::vector<vec2f> polygon_vertices;
     public:
         PhysicsShape() = delete; // It's either this or breaking if someone tries to use it uninitialized
-        PhysicsShape(RigidBody& body, float radius, vec2f offset_from_cog); // Circle constructor
-        PhysicsShape(RigidBody& body, std::pair<vec2f, vec2f> endpoints, float thickness); // Segment constructor
+        PhysicsShape(RigidBody& body, double radius, vec2f offset_from_cog); // Circle constructor
+        PhysicsShape(RigidBody& body, std::pair<vec2f, vec2f> endpoints, double thickness); // Segment constructor
         PhysicsShape(RigidBody& body, std::vector<vec2f> points); // Polygon constructor
         PhysicsShape(RigidBody& body, rectf box); // Box constructor
 
@@ -91,10 +91,10 @@ namespace Bolt {
         void setBody(RigidBody& body);
         bool isSensor() const;
         void setSensor(bool is_sensor);
-        float getElasticity() const;
-        void setElasticity(float elasticity);
-        float getFriction() const;
-        void setFriction(float friction);
+        double getElasticity() const;
+        void setElasticity(double elasticity);
+        double getFriction() const;
+        void setFriction(double friction);
         vec2f getSurfaceVelocity() const;
         void setSurfaceVelocity(vec2f velocity);
         CollisionFilter getCollisionFilter() const; // TODO
@@ -103,17 +103,17 @@ namespace Bolt {
 
         // Circle methods
         vec2f circleGetOffset() const;
-        float circleGetRadius() const;
+        double circleGetRadius() const;
 
         // Segment methods
         std::tuple<vec2f, vec2f> segmentGetEndpoints() const;
         vec2f segmentGetNormalVector() const;
-        float segmentGetThickness() const;
+        double segmentGetThickness() const;
         void segmentSetNeighborPoint(vec2f previous, vec2f next);
 
         // Polygon methods
         const std::vector<vec2f>& polygonGetPoints() const;
-        // float polygonGetScale() const; Pretty sure this isn't really what radius is, needs testing TODO
+        // double polygonGetScale() const; Pretty sure this isn't really what radius is, needs testing TODO
         vec2f polygonGetCentroid() const;
     };
 
