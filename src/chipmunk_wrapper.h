@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 #include <map>
+#include <functional>
 
 #include "transform.h"
 #include "utility.h"
