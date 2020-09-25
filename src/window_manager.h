@@ -31,6 +31,7 @@ namespace Bolt {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
+        GameObject dummy_obj;
 
         vec2i mouse_position;
         inline static WindowManager* singleton;
@@ -40,6 +41,8 @@ namespace Bolt {
         WindowManager(std::string);
         WindowManager();
         ~WindowManager();
+
+        inline static GameObject* dummy;
 
         static std::shared_ptr<Texture> loadTexture(fs::path);
         static vec2f getMousePos(bool screenSpace = false);

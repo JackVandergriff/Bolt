@@ -34,7 +34,13 @@ auto RigidBody::makeRigidBody(RBTypes type) {
 
 RigidBody::RigidBody() : RigidBody(RBTypes::DYNAMIC) {}
 
-RigidBody::RigidBody(RBTypes type) : body(makeRigidBody(type)) {}
+RigidBody::RigidBody(RBTypes type) : body(makeRigidBody(type)) {
+    lookup.insert({body.get(), *this});
+}
+
+RigidBody::~RigidBody() {
+    lookup.erase(body.get());
+}
 
 void RigidBody::onUpdate() {
     transform->local_geometry = applyGeometry(
@@ -173,19 +179,21 @@ void RigidBody::sleep() {
 }
 
 PhysicsSpace &RigidBody::getSpace() const {
-    // TODO
+    return PhysicsSpace::lookup.at(cpBodyGetSpace(body.get()));
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, double radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {
     shape = std::shared_ptr<cpShape>(cpCircleShapeNew(body.body.get(), radius, cp(offset_from_cog)), [](cpShape* s){
         cpShapeFree(s);
     });
+    addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, std::pair<vec2f, vec2f> endpoints, double thickness) : type(ShapeTypes::SEGMENT) {
     shape = std::shared_ptr<cpShape>(cpSegmentShapeNew(body.body.get(), cp(endpoints.first), cp(endpoints.second), thickness), [](cpShape* s){
         cpShapeFree(s);
     });
+    addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, std::vector<vec2f> points) : type(ShapeTypes::POLYGON), polygon_vertices(points) {
@@ -194,6 +202,7 @@ PhysicsShape::PhysicsShape(RigidBody &body, std::vector<vec2f> points) : type(Sh
     shape = std::shared_ptr<cpShape>(cpPolyShapeNew(body.body.get(), cp_verts.size(), cp_verts.data(), cpTransformIdentity, PHYSICS_BOX_RADIUS), [](cpShape* s){
         cpShapeFree(s);
     });
+    addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, rectf box) : type(ShapeTypes::POLYGON) {
@@ -201,6 +210,7 @@ PhysicsShape::PhysicsShape(RigidBody &body, rectf box) : type(ShapeTypes::POLYGO
     shape = std::shared_ptr<cpShape>(cpBoxShapeNew2(body.body.get(), cpBBNew(box.x, box.y, box.x + box.w, box.y + box.h), PHYSICS_BOX_RADIUS), [](cpShape* s){
         cpShapeFree(s);
     });
+    addToSpaceOfBody(body);
 }
 
 ShapeTypes PhysicsShape::getType() const {
@@ -208,7 +218,7 @@ ShapeTypes PhysicsShape::getType() const {
 }
 
 RigidBody &PhysicsShape::getBody() const {
-    // TODO
+    return RigidBody::lookup.at(cpShapeGetBody(shape.get()));
 }
 
 void PhysicsShape::setBody(RigidBody &body) {
@@ -258,7 +268,7 @@ void PhysicsShape::setCollisionFilter(CollisionFilter filter) {
 }
 
 PhysicsSpace &PhysicsShape::getSpace() const {
-    // TODO
+    return PhysicsSpace::lookup.at(cpShapeGetSpace(shape.get()));
 }
 
 vec2f PhysicsShape::circleGetOffset() const {
@@ -307,4 +317,80 @@ vec2f PhysicsShape::polygonGetCentroid() const {
     return {cent.x, cent.y};
 }
 
+void PhysicsShape::addToSpaceOfBody(RigidBody &body) {
+    cpSpaceAddShape(body.getSpace().space.get(), shape.get());
+}
 
+
+PhysicsSpace::PhysicsSpace() : space(cpSpaceNew(), [](cpSpace* s){cpSpaceFree(s);}) {
+    lookup.insert({space.get(), *this});
+}
+
+PhysicsSpace::~PhysicsSpace() {
+    lookup.erase(space.get());
+}
+
+void PhysicsSpace::update() {
+    cpSpaceStep(space.get(), time_delta);
+}
+
+int PhysicsSpace::getAccuracy() const {
+    return cpSpaceGetIterations(space.get());
+}
+
+void PhysicsSpace::setAccuracy(int accuracy) {
+    cpSpaceSetIterations(space.get(), accuracy);
+}
+
+vec2f PhysicsSpace::getGravity() const {
+    auto grav = cpSpaceGetGravity(space.get());
+    return {grav.x, grav.y};
+}
+
+void PhysicsSpace::setGravity(vec2f gravity) {
+    cpSpaceSetGravity(space.get(), cp(gravity));
+}
+
+double PhysicsSpace::getDamping() const {
+    return cpSpaceGetDamping(space.get());
+}
+
+void PhysicsSpace::setDamping(double damping) {
+    cpSpaceSetDamping(space.get(), damping);
+}
+
+double PhysicsSpace::getMaxIdleSpeed() const {
+    return cpSpaceGetIdleSpeedThreshold(space.get());
+}
+
+void PhysicsSpace::setMaxIdleSpeed(double speed) {
+    cpSpaceSetIdleSpeedThreshold(space.get(), speed);
+}
+
+double PhysicsSpace::getIdleSleepTime() const {
+    return cpSpaceGetSleepTimeThreshold(space.get());
+}
+
+void PhysicsSpace::setIdleSleepTime(double time) {
+    cpSpaceSetSleepTimeThreshold(space.get(), time);
+}
+
+double PhysicsSpace::getMaxOverlap() const {
+    return cpSpaceGetCollisionSlop(space.get());
+}
+
+void PhysicsSpace::setMaxOverlap(double overlap) {
+    cpSpaceSetCollisionSlop(space.get(), overlap);
+}
+
+double PhysicsSpace::getCollisionBias() const {
+    return cpSpaceGetCollisionBias(space.get());
+}
+
+void PhysicsSpace::setCollisionBias(double bias) {
+    cpSpaceSetCollisionBias(space.get(), bias);
+}
+
+double PhysicsSpace::getTimeStep() const {
+    return cpSpaceGetCurrentTimeStep(space.get());
+}

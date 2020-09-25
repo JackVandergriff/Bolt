@@ -17,15 +17,14 @@ namespace cp {
 using namespace Bolt;
 
 WindowManager::WindowManager(std::string title) {
-    cp::cpSpace* test = cp::cpSpaceNew();
     SDL_Init(SDL_INIT_VIDEO);
     IMG_Init(IMG_INIT_PNG);
     TTF_Init();
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
     singleton = this;
+    dummy = &dummy_obj;
     flush();
-    cp::cpSpaceFree(test);
 }
 
 WindowManager::WindowManager() {
