@@ -17,6 +17,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <functional>
 
 namespace Bolt {
 
@@ -49,7 +50,7 @@ namespace Bolt {
         static std::shared_ptr<Texture> createTextureFromSurface(SDL_Surface* surface);
         static void render(Renderable to_render);
         static void flush();
-        static void run();
+        static void run(std::function<void()> update=[](){});
         static void registerHandler(Component*, Events);
         static void unregisterHandler(Component*, Events);
         static void unregisterHandler(Component*);

@@ -18,7 +18,7 @@ cpVect cp(vec2f input) {
 auto RigidBody::makeRigidBody(RBTypes type) {
     switch (type) {
         case RBTypes::DYNAMIC:
-            return std::shared_ptr<cpBody>(cpBodyNew(0, 0), [](cpBody* b) {
+            return std::shared_ptr<cpBody>(cpBodyNew(1, 1), [](cpBody* b) {
                 cpBodyFree(b);
             }); // Is RAII really that hard??
         case RBTypes::KINEMATIC:
@@ -32,10 +32,9 @@ auto RigidBody::makeRigidBody(RBTypes type) {
     }
 }
 
-RigidBody::RigidBody() : RigidBody(RBTypes::DYNAMIC) {}
-
-RigidBody::RigidBody(RBTypes type) : body(makeRigidBody(type)) {
+RigidBody::RigidBody(PhysicsSpace& space, RBTypes type) : body(makeRigidBody(type)) {
     lookup.insert({body.get(), *this});
+    cpSpaceAddBody(space.space.get(), body.get());
 }
 
 RigidBody::~RigidBody() {

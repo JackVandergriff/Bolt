@@ -70,7 +70,7 @@ void WindowManager::flush() {
     SDL_RenderClear(singleton->renderer);
 }
 
-void WindowManager::run() {
+void WindowManager::run(std::function<void()> update) {
     SDL_Event sdl_event;
     while (sdl_event.type != SDL_QUIT) {
         while (SDL_PollEvent(&sdl_event) != 0) {
@@ -90,6 +90,7 @@ void WindowManager::run() {
         for (auto& gameObject : GameObject::gameObjects) {
             gameObject->update();
         }
+        update();
         flush();
         SDL_Delay(16);
     }

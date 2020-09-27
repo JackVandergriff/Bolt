@@ -36,21 +36,21 @@ namespace Bolt {
         // TODO
     };
 
-    class RigidBody : Component {
+    class RigidBody : public Component {
     private:
         std::shared_ptr<cpBody> body;
         static inline std::map<cpBody*, RigidBody&> lookup;
         auto makeRigidBody(RBTypes type);
     public:
         friend class PhysicsShape;
-        RigidBody();
-        RigidBody(RBTypes type);
+        RigidBody() = delete; // TODO add default space lookup in WindowManager
+        RigidBody(PhysicsSpace& space, RBTypes type=RBTypes::DYNAMIC);
         ~RigidBody();
         void onUpdate() override;
 
         RBTypes getType() const;
         void setType(RBTypes type);
-        PhysicsSpace& getSpace() const; // TODO
+        PhysicsSpace& getSpace() const;
         double getMass() const;
         void setMass(double mass);
         double getMoment() const;
@@ -94,7 +94,7 @@ namespace Bolt {
         PhysicsShape(RigidBody& body, rectf box); // Box constructor
 
         ShapeTypes getType() const;
-        RigidBody& getBody() const; // TODO
+        RigidBody& getBody() const;
         void setBody(RigidBody& body);
         bool isSensor() const;
         void setSensor(bool is_sensor);
@@ -106,7 +106,7 @@ namespace Bolt {
         void setSurfaceVelocity(vec2f velocity);
         CollisionFilter getCollisionFilter() const; // TODO
         void setCollisionFilter(CollisionFilter filter); // TODO
-        PhysicsSpace& getSpace() const; // TODO
+        PhysicsSpace& getSpace() const;
 
         // Circle methods
         vec2f circleGetOffset() const;
