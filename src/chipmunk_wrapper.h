@@ -31,6 +31,7 @@ namespace Bolt {
     };
 
     class PhysicsSpace;
+    class PhysicsShape;
 
     struct CollisionFilter {
         // TODO
@@ -39,6 +40,7 @@ namespace Bolt {
     class RigidBody : public Component {
     private:
         std::shared_ptr<cpBody> body;
+        std::vector<PhysicsShape> shapes;
         static inline std::map<cpBody*, RigidBody&> lookup;
         auto makeRigidBody(RBTypes type);
     public:
@@ -46,7 +48,14 @@ namespace Bolt {
         RigidBody() = delete; // TODO add default space lookup in WindowManager
         RigidBody(PhysicsSpace& space, RBTypes type=RBTypes::DYNAMIC);
         ~RigidBody();
+        void onAttach() override;
         void onUpdate() override;
+
+        template<class... Args> void addShape(Args&&... args) {
+            shapes.push_back({*this, std::forward<Args>(args)...}); // And the winner for confusing syntax goes to!
+        }
+        PhysicsShape& getShape(int index);
+        std::vector<PhysicsShape>& getShapes();
 
         RBTypes getType() const;
         void setType(RBTypes type);

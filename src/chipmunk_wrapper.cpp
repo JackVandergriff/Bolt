@@ -42,9 +42,15 @@ RigidBody::~RigidBody() {
 }
 
 void RigidBody::onUpdate() {
+    double scale = transform->local_geometry.scale;
     transform->local_geometry = applyGeometry(
             Geometry{getPosition(), getAngle(), 1},
             owner->getOwner()->getTransform()->globalGeometry());
+    transform->local_geometry.scale = scale;
+}
+
+void RigidBody::onAttach() {
+    cpBodySetPosition(body.get(), cp(transform->globalGeometry().offset));
 }
 
 RBTypes RigidBody::getType() const {
@@ -179,6 +185,14 @@ void RigidBody::sleep() {
 
 PhysicsSpace &RigidBody::getSpace() const {
     return PhysicsSpace::lookup.at(cpBodyGetSpace(body.get()));
+}
+
+PhysicsShape &RigidBody::getShape(int index) {
+    return shapes[index];
+}
+
+std::vector<PhysicsShape> &RigidBody::getShapes() {
+    return shapes;
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, double radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {

@@ -9,6 +9,7 @@
 #include "sprite_renderer.h"
 #include "events.h"
 #include "filesystem_includes.h"
+#include "chipmunk_wrapper.h"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -33,7 +34,9 @@ namespace Bolt {
         SDL_Window* window;
         SDL_Renderer* renderer;
         GameObject dummy_obj;
+        PhysicsSpace space;
 
+        bool simulateSpace;
         vec2i mouse_position;
         inline static WindowManager* singleton;
         inline static std::map<Events, std::set<Component*>> eventHandlers;
@@ -54,6 +57,8 @@ namespace Bolt {
         static void registerHandler(Component*, Events);
         static void unregisterHandler(Component*, Events);
         static void unregisterHandler(Component*);
+        static PhysicsSpace& getPhysicsSpace();
+        static void enablePhysicsSimulation(bool enable);
         static const std::map<Events, std::set<Component*>> &getEventHandlers();
         static const std::map<Component*, std::set<Events>> &getEventHandlersReverse();
 

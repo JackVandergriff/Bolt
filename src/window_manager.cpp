@@ -72,6 +72,7 @@ void WindowManager::flush() {
 
 void WindowManager::run(std::function<void()> update) {
     SDL_Event sdl_event;
+
     while (sdl_event.type != SDL_QUIT) {
         while (SDL_PollEvent(&sdl_event) != 0) {
             if (sdl_event.type == SDL_QUIT) {
@@ -90,6 +91,10 @@ void WindowManager::run(std::function<void()> update) {
         for (auto& gameObject : GameObject::gameObjects) {
             gameObject->update();
         }
+
+        if (singleton->simulateSpace)
+            singleton->space.update();
+
         update();
         flush();
         SDL_Delay(16);
@@ -138,4 +143,13 @@ vec2f WindowManager::getMousePos(bool screenSpace) {
 
 std::shared_ptr<Texture> WindowManager::createTextureFromSurface(SDL_Surface* surface) {
     return std::make_shared<Texture>(SDL_CreateTextureFromSurface(singleton->renderer, surface));
+}
+
+PhysicsSpace &WindowManager::getPhysicsSpace() {
+    singleton->simulateSpace = true;
+    return singleton->space;
+}
+
+void WindowManager::enablePhysicsSimulation(bool enable) {
+    singleton->simulateSpace = true;
 }
