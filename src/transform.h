@@ -16,6 +16,32 @@ namespace Bolt {
     public:
         Geometry local_geometry;
         Geometry globalGeometry() const;
+        Geometry externalGeometry() const;
+        void setGlobalGeometry(Geometry global_geometry);
+
+        auto globalToLocal(auto global) {
+            return applyGeometry(global, globalGeometry());
+        };
+
+        auto localToGlobal(auto local) {
+            return stripGeometry(local, globalGeometry());
+        };
+
+        auto globalToExternal(auto global) {
+            return applyGeometry(global, externalGeometry());
+        };
+
+        auto externalToGlobal(auto external) {
+            return stripGeometry(external, externalGeometry());
+        };
+
+        auto localToExternal(auto local) {
+            return stripGeometry(local, local_geometry);
+        };
+
+        auto externalToLocal(auto external) {
+            return applyGeometry(external, local_geometry);
+        };
     };
 
 }

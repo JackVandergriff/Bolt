@@ -17,3 +17,11 @@ Geometry Transform::globalGeometry() const {
 
     return global_geometry;
 }
+
+Geometry Transform::externalGeometry() const {
+    return owner->getOwner()->getTransform()->globalGeometry();
+}
+
+void Transform::setGlobalGeometry(Geometry global_geometry) {
+    local_geometry = applyGeometry(global_geometry, externalGeometry());
+}

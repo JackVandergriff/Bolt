@@ -17,6 +17,6 @@ void SpriteRenderer::onUpdate() {
         if (frame_counter == 0) sprite.getAnimation().advance();
     }
     rectf local = sprite.getAnimation().getFrameSize(); // Force conversion to rectf for source - center calculation
-    auto dest = stripGeometry(local - center, transform->globalGeometry());
+    auto dest = transform->localToGlobal(local - center);
     WindowManager::render({sprite.getTexture(), sprite.getSource(), dest});
 }

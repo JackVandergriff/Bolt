@@ -8,12 +8,6 @@
 
 #include <iostream>
 
-namespace cp {
-
-#include <chipmunk/chipmunk.h>
-
-}
-
 using namespace Bolt;
 
 WindowManager::WindowManager(std::string title) {
@@ -51,7 +45,7 @@ void WindowManager::render(Renderable to_render) {
     const static SDL_Point center{0,0};
 
     if (!to_render.screenSpace)
-        to_render.dest = applyGeometry(to_render.dest, Camera::main->getOwner()->getComponent<Transform>()->globalGeometry());
+        to_render.dest = Camera::main->getTransform()->globalToLocal(to_render.dest);
 
     SDL_Rect source = (SDL_Rect)to_render.source;
     SDL_Rect dest = (SDL_Rect)to_render.dest.raw_rect;
@@ -138,7 +132,7 @@ const std::map<Component*, std::set<Events>>& WindowManager::getEventHandlersRev
 vec2f WindowManager::getMousePos(bool screenSpace) {
     if (screenSpace)
         return (vec2f)singleton->mouse_position;
-    return stripGeometry((vec2f)singleton->mouse_position, Camera::main->getOwner()->getComponent<Transform>()->globalGeometry());
+    return Camera::main->getTransform()->localToGlobal((vec2f)singleton->mouse_position);
 }
 
 std::shared_ptr<Texture> WindowManager::createTextureFromSurface(SDL_Surface* surface) {

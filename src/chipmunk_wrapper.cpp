@@ -43,9 +43,7 @@ RigidBody::~RigidBody() {
 
 void RigidBody::onUpdate() {
     double scale = transform->local_geometry.scale;
-    transform->local_geometry = applyGeometry(
-            Geometry{getPosition(), getAngle(), 1},
-            owner->getOwner()->getTransform()->globalGeometry());
+    transform->setGlobalGeometry({getPosition(), getAngle(), 1});
     transform->local_geometry.scale = scale;
 }
 
