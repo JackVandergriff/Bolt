@@ -19,27 +19,33 @@ namespace Bolt {
         Geometry externalGeometry() const;
         void setGlobalGeometry(Geometry global_geometry);
 
-        auto globalToLocal(auto global) {
+        template<typename T>
+        auto globalToLocal(T global) {
             return applyGeometry(global, globalGeometry());
         };
 
-        auto localToGlobal(auto local) {
+        template<typename T>
+        auto localToGlobal(T local) {
             return stripGeometry(local, globalGeometry());
         };
 
-        auto globalToExternal(auto global) {
+        template<typename T>
+        auto globalToExternal(T global) {
             return applyGeometry(global, externalGeometry());
         };
 
-        auto externalToGlobal(auto external) {
+        template<typename T>
+        auto externalToGlobal(T external) {
             return stripGeometry(external, externalGeometry());
         };
 
-        auto localToExternal(auto local) {
+        template<typename T>
+        auto localToExternal(T local) {
             return stripGeometry(local, local_geometry);
         };
 
-        auto externalToLocal(auto external) {
+        template<typename T>
+        auto externalToLocal(T external) {
             return applyGeometry(external, local_geometry);
         };
     };
