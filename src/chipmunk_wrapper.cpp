@@ -3,6 +3,7 @@
 //
 
 #include "chipmunk_wrapper.h"
+#include "window_manager.h"
 
 #include <chipmunk/chipmunk.h>
 #include <iostream>
@@ -31,6 +32,10 @@ auto RigidBody::makeRigidBody(RBTypes type) {
             }); // But a simple C++ wrapper in at least C++11 would be cool
     }
 }
+
+RigidBody::RigidBody() : RigidBody(WindowManager::getPhysicsSpace(), RBTypes::DYNAMIC) {}
+
+RigidBody::RigidBody(RBTypes type) : RigidBody(WindowManager::getPhysicsSpace(), type) {}
 
 RigidBody::RigidBody(PhysicsSpace& space, RBTypes type) : body(makeRigidBody(type)) {
     lookup.insert({body.get(), *this});

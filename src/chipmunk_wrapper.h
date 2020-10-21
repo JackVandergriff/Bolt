@@ -45,7 +45,8 @@ namespace Bolt {
         auto makeRigidBody(RBTypes type);
     public:
         friend class PhysicsShape;
-        RigidBody() = delete; // TODO add default space lookup in WindowManager
+        RigidBody();
+        RigidBody(RBTypes type);
         RigidBody(PhysicsSpace& space, RBTypes type=RBTypes::DYNAMIC);
         ~RigidBody();
         void onAttach() override;
