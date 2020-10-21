@@ -9,9 +9,9 @@
 
 namespace Bolt {
 
-    class Collider : public Component {
+    class Collider : public CustomComponent<Collider> {
     public:
-        virtual bool isInside(vec2f) = 0;
+        virtual bool isInside(vec2f) {return false;};
     };
 
 }

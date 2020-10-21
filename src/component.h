@@ -10,6 +10,7 @@
 #include <concepts>
 #endif
 #include <SDL.h>
+#include <memory>
 
 #include "events.h"
 
@@ -30,10 +31,18 @@ namespace Bolt {
         virtual void onUpdate() {};
         virtual void onFixed() {};
         virtual void onEvent(const Event* event) {};
+        virtual std::unique_ptr<Component> clone() const=0;
 
         friend class GameObject;
 
-        ~Component();
+        virtual ~Component();
+    };
+
+    template<typename T>
+    class CustomComponent : public Component {
+        std::unique_ptr<Component> clone() const override {
+            return std::make_unique<T>(static_cast<const T&>(*this));
+        }
     };
 
 #if __cplusplus > 201703L // C++20 support

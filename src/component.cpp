@@ -10,7 +10,7 @@ using namespace Bolt;
 
 GameObject *Component::getOwner() const {
     if (owner) return owner;
-    return WindowManager::dummy;
+    else return WindowManager::dummy;
 }
 
 Component::~Component() {

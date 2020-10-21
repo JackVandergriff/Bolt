@@ -37,7 +37,7 @@ namespace Bolt {
         // TODO
     };
 
-    class RigidBody : public Component {
+    class RigidBody : public CustomComponent<RigidBody> {
     private:
         std::shared_ptr<cpBody> body;
         std::vector<PhysicsShape> shapes;

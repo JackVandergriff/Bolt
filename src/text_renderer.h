@@ -11,7 +11,7 @@
 
 namespace Bolt {
 
-    class TextRenderer : public Component {
+    class TextRenderer : public CustomComponent<TextRenderer> {
     public:
         Text text;
 

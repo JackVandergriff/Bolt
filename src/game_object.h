@@ -18,9 +18,9 @@
 
 namespace Bolt {
 
-    class GameObject : public Component {
+    class GameObject : public CustomComponent<GameObject> {
     private:
-        std::set<std::unique_ptr<Component>> components;
+        std::vector<std::unique_ptr<Component>> components;
         std::vector<Component*> children;
         bool active;
 
@@ -53,6 +53,10 @@ namespace Bolt {
 
         GameObject();
         GameObject(std::string);
+        GameObject(const GameObject& other);
+        GameObject& operator=(const GameObject& other);
+        GameObject(GameObject&&) = delete;
+        GameObject& operator=(GameObject&&) = delete;
         ~GameObject();
     };
 
@@ -68,17 +72,14 @@ namespace Bolt {
 
     #include TEMPLATE_COMPONENT_TYPE_IMPL
     std::unique_ptr<Component> GameObject::removeComponent() {
-        for (const auto &component : components) {
-            if (dynamic_cast<C*>(component.get())) {
-                auto extracted = std::move(components.extract(component).value());
-                extracted->Component::onAttach();
-                if (std::is_same<C, GameObject>::value) {
-                    children.erase(std::find(children.begin(), children.end(), extracted.get()));
-                }
-                return std::move(extracted);
-            }
+        auto found_iter = std::find_if(components.begin(), components.end(), [](const auto& element){return dynamic_cast<C*>(element.get()) != nullptr;});
+        if (found_iter != components.end()) {
+            auto extracted{std::move(*found_iter)};
+            components.erase(found_iter);
+            return std::move(extracted);
+        } else {
+            return nullptr;
         }
-        return nullptr;
     }
 
     #if __cplusplus > 201703L // C++20 support
@@ -93,7 +94,7 @@ namespace Bolt {
         attachComponent(component.get(), isGameObject);
 
         auto to_return = static_cast<C*>(component.get());
-        components.insert(std::move(component));
+        components.push_back(std::move(component));
         return to_return;
     }
 
@@ -106,7 +107,7 @@ namespace Bolt {
         if (to_return == nullptr)
             throw std::bad_cast();
 
-        components.insert(std::move(component));
+        components.push_back(std::move(component));
         return to_return;
     }
 

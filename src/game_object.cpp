@@ -30,14 +30,14 @@ GameObject::~GameObject() {
 }
 
 std::unique_ptr<Component> GameObject::removeComponent(Component* to_remove) {
-    for (auto& component : components) {
-        if (component.get() == to_remove) {
-            auto extracted = std::move(components.extract(component).value());
-            extracted->Component::onAttach();
-            return std::move(extracted);
-        }
+    auto found_iter = std::find_if(components.begin(), components.end(), [&](const auto& element){return element.get() == to_remove;});
+    if (found_iter != components.end()) {
+        auto extracted{std::move(*found_iter)};
+        components.erase(found_iter);
+        return std::move(extracted);
+    } else {
+        return nullptr;
     }
-    return nullptr;
 }
 
 GameObject* GameObject::getChild(int index) {
@@ -71,4 +71,10 @@ void GameObject::attachComponent(Component* component, bool isGameObject) {
         component->transform = transform;
     }
     component->onAttach();
+}
+
+GameObject::GameObject(const GameObject &other) : active(other.active), name(other.name) {
+    for (const auto& component : other.components) {
+
+    }
 }

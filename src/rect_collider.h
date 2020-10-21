@@ -13,6 +13,7 @@ namespace Bolt {
     public:
         rectf collision;
         bool isInside(vec2f) override;
+        std::unique_ptr<Component> clone() const override;
     };
 
 }

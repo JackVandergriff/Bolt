@@ -11,7 +11,7 @@
 
 namespace Bolt {
 
-    class SpriteRenderer : public Component {
+    class SpriteRenderer : public CustomComponent<SpriteRenderer> {
     private:
         int frame_counter;
     public:
