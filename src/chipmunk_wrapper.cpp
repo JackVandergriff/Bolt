@@ -19,17 +19,11 @@ cpVect cp(vec2f input) {
 auto RigidBody::makeRigidBody(RBTypes type) {
     switch (type) {
         case RBTypes::DYNAMIC:
-            return std::shared_ptr<cpBody>(cpBodyNew(1, 1), [](cpBody* b) {
-                cpBodyFree(b);
-            }); // Is RAII really that hard??
+            return std::unique_ptr<cpBody, Deleter>(cpBodyNew(1, 1), Deleter{});
         case RBTypes::KINEMATIC:
-            return std::shared_ptr<cpBody>(cpBodyNewKinematic(), [](cpBody* b) {
-                cpBodyFree(b);
-            }); // Like I get you want to write it in C
+            return std::unique_ptr<cpBody, Deleter>(cpBodyNewKinematic(), Deleter{});
         case RBTypes::STATIC:
-            return std::shared_ptr<cpBody>(cpBodyNewStatic(), [](cpBody* b) {
-                cpBodyFree(b);
-            }); // But a simple C++ wrapper in at least C++11 would be cool
+            return std::unique_ptr<cpBody, Deleter>(cpBodyNewStatic(), Deleter{});
     }
 }
 
@@ -198,34 +192,53 @@ std::vector<PhysicsShape> &RigidBody::getShapes() {
     return shapes;
 }
 
+RigidBody::RigidBody(const RigidBody &other) : RigidBody(other.getSpace(), other.getType()) {
+    setAngularVelocity(other.getAngularVelocity());
+    setVelocity(other.getVelocity());
+    setCenterOfGravity(other.getCenterOfGravity());
+    setMass(other.getMass());
+    setMoment(other.getMoment());
+    setForce(other.getForce());
+    setTorque(other.getTorque());
+
+    std::copy(other.shapes.cbegin(), other.shapes.cend(), std::back_inserter(shapes));
+    for (auto& shape : shapes) {
+        shape.setBody(*this);
+    }
+}
+
+RigidBody &RigidBody::operator=(RigidBody other) {
+    swap(other, *this);
+    return *this;
+}
+
+void Bolt::swap(RigidBody &first, RigidBody &second) noexcept {
+    using std::swap;
+
+    swap(first.body, second.body);
+    swap(first.shapes, second.shapes);
+}
+
 PhysicsShape::PhysicsShape(RigidBody &body, double radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {
-    shape = std::shared_ptr<cpShape>(cpCircleShapeNew(body.body.get(), radius, cp(offset_from_cog)), [](cpShape* s){
-        cpShapeFree(s);
-    });
+    shape = std::unique_ptr<cpShape, Deleter>(cpCircleShapeNew(body.body.get(), radius, cp(offset_from_cog)), Deleter{});
     addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, std::pair<vec2f, vec2f> endpoints, double thickness) : type(ShapeTypes::SEGMENT) {
-    shape = std::shared_ptr<cpShape>(cpSegmentShapeNew(body.body.get(), cp(endpoints.first), cp(endpoints.second), thickness), [](cpShape* s){
-        cpShapeFree(s);
-    });
+    shape = std::unique_ptr<cpShape, Deleter>(cpSegmentShapeNew(body.body.get(), cp(endpoints.first), cp(endpoints.second), thickness), Deleter{});
     addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, std::vector<vec2f> points) : type(ShapeTypes::POLYGON), polygon_vertices(points) {
     std::vector<cpVect> cp_verts;
-    std::transform(polygon_vertices.begin(), polygon_vertices.end(), cp_verts.begin(), cp);
-    shape = std::shared_ptr<cpShape>(cpPolyShapeNew(body.body.get(), cp_verts.size(), cp_verts.data(), cpTransformIdentity, PHYSICS_BOX_RADIUS), [](cpShape* s){
-        cpShapeFree(s);
-    });
+    std::transform(polygon_vertices.cbegin(), polygon_vertices.cend(), std::back_inserter(cp_verts), cp);
+    shape = std::unique_ptr<cpShape, Deleter>(cpPolyShapeNew(body.body.get(), cp_verts.size(), cp_verts.data(), cpTransformIdentity, PHYSICS_BOX_RADIUS), Deleter{});
     addToSpaceOfBody(body);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, rectf box) : type(ShapeTypes::POLYGON) {
     polygon_vertices = {box.getTopLeft(), box.getTopLeft() + vec2f{box.w, 0}, box.getBottomRight(), box.getTopLeft() + vec2f{0, box.h}};
-    shape = std::shared_ptr<cpShape>(cpBoxShapeNew2(body.body.get(), cpBBNew(box.x, box.y, box.x + box.w, box.y + box.h), PHYSICS_BOX_RADIUS), [](cpShape* s){
-        cpShapeFree(s);
-    });
+    shape = std::unique_ptr<cpShape, Deleter>(cpBoxShapeNew2(body.body.get(), cpBBNew(box.x, box.y, box.x + box.w, box.y + box.h), PHYSICS_BOX_RADIUS), Deleter{});
     addToSpaceOfBody(body);
 }
 
@@ -238,7 +251,9 @@ RigidBody &PhysicsShape::getBody() const {
 }
 
 void PhysicsShape::setBody(RigidBody &body) {
+    cpSpaceRemoveShape(getSpace().space.get(), shape.get());
     cpShapeSetBody(shape.get(), body.body.get());
+    cpSpaceAddShape(body.getSpace().space.get(), shape.get());
 }
 
 bool PhysicsShape::isSensor() const {
@@ -337,6 +352,44 @@ void PhysicsShape::addToSpaceOfBody(RigidBody &body) {
     cpSpaceAddShape(body.getSpace().space.get(), shape.get());
 }
 
+PhysicsShape::PhysicsShape(const PhysicsShape &other) : type(other.getType()) {
+    if (!other.polygon_vertices.empty()) {
+        std::copy(other.polygon_vertices.cbegin(), other.polygon_vertices.cend(), std::back_inserter(polygon_vertices));
+    }
+
+    if (type == ShapeTypes::CIRCLE) {
+        shape = std::unique_ptr<cpShape, Deleter>(
+                cpCircleShapeNew(other.getBody().body.get(), other.circleGetRadius(), cp(other.circleGetOffset())),
+                Deleter{});
+    } else if (type == ShapeTypes::SEGMENT) {
+        auto [first, second] = other.segmentGetEndpoints();
+        shape = std::unique_ptr<cpShape, Deleter>(
+                cpSegmentShapeNew(other.getBody().body.get(), cp(first), cp(second), other.segmentGetThickness()),
+                Deleter{});
+    } else if (type == ShapeTypes::POLYGON) {
+        std::vector<cpVect> cp_verts;
+        std::transform(polygon_vertices.cbegin(), polygon_vertices.cend(), std::back_inserter(cp_verts), cp);
+        shape = std::unique_ptr<cpShape, Deleter>(
+                cpPolyShapeNew(other.getBody().body.get(), cp_verts.size(), cp_verts.data(), cpTransformIdentity, PHYSICS_BOX_RADIUS),
+                Deleter{});
+    }
+
+    addToSpaceOfBody(other.getBody());
+}
+
+void Bolt::swap(PhysicsShape& first, PhysicsShape& second) {
+    using std::swap;
+
+    swap(first.type, second.type);
+    swap(first.shape, second.shape);
+    swap(first.polygon_vertices, second.polygon_vertices);
+}
+
+PhysicsShape &PhysicsShape::operator=(PhysicsShape other) {
+    swap(other, *this);
+    return *this;
+}
+
 
 PhysicsSpace::PhysicsSpace() : space(cpSpaceNew(), [](cpSpace* s){cpSpaceFree(s);}) {
     lookup.insert({space.get(), *this});
@@ -409,4 +462,14 @@ void PhysicsSpace::setCollisionBias(double bias) {
 
 double PhysicsSpace::getTimeStep() const {
     return cpSpaceGetCurrentTimeStep(space.get());
+}
+
+void RigidBody::Deleter::operator()(cpBody* to_free) {
+    if (to_free)
+        cpBodyFree(to_free);
+}
+
+void PhysicsShape::Deleter::operator()(cpShape* to_free) {
+    if (to_free)
+        cpShapeFree(to_free);
 }

@@ -83,7 +83,8 @@ void WindowManager::run(std::function<void()> update) {
         }
 
         for (auto& gameObject : GameObject::gameObjects) {
-            gameObject->update();
+            if (gameObject->active)
+                gameObject->update();
         }
 
         if (singleton->simulateSpace)

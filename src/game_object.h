@@ -22,12 +22,13 @@ namespace Bolt {
     private:
         std::vector<std::unique_ptr<Component>> components;
         std::vector<Component*> children;
-        bool active;
 
         void attachComponent(Component* component, bool isGameObject);
     public:
         inline static std::set<GameObject*> gameObjects;
-        std::string name;
+
+        bool active{true};
+        std::string name{"GameObject"};
 
         #include TEMPLATE_COMPONENT_TYPE_DECL
         C* getComponent();

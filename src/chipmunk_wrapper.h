@@ -39,16 +39,25 @@ namespace Bolt {
 
     class RigidBody : public CustomComponent<RigidBody> {
     private:
-        std::shared_ptr<cpBody> body;
+        struct Deleter {
+            void operator()(cpBody* to_free); // Can't use lambda, have to keep cpBodyFree out of header
+        };
+
+        std::unique_ptr<cpBody, Deleter> body;
         std::vector<PhysicsShape> shapes;
         static inline std::map<cpBody*, RigidBody&> lookup;
         auto makeRigidBody(RBTypes type);
     public:
         friend class PhysicsShape;
+        friend void swap(RigidBody& first, RigidBody& second) noexcept;
         RigidBody();
         RigidBody(RBTypes type);
         RigidBody(PhysicsSpace& space, RBTypes type=RBTypes::DYNAMIC);
         ~RigidBody();
+        RigidBody(const RigidBody& other);
+        RigidBody& operator=(RigidBody other);
+        RigidBody(RigidBody&& other) = default;
+        RigidBody& operator=(RigidBody&&) = default;
         void onAttach() override;
         void onUpdate() override;
 
@@ -91,17 +100,27 @@ namespace Bolt {
 
     class PhysicsShape {
     private:
-        std::shared_ptr<cpShape> shape;
-        const ShapeTypes type;
+        struct Deleter {
+            void operator()(cpShape* to_free); // Can't use lambda, have to keep cpShapeFree out of header
+        };
+
+        std::unique_ptr<cpShape, Deleter> shape;
+        ShapeTypes type;
         std::vector<vec2f> polygon_vertices;
 
         void addToSpaceOfBody(RigidBody& body);
     public:
+        friend void swap(PhysicsShape& first, PhysicsShape& second);
+
         PhysicsShape() = delete; // It's either this or breaking if someone tries to use it uninitialized
         PhysicsShape(RigidBody& body, double radius, vec2f offset_from_cog); // Circle constructor
         PhysicsShape(RigidBody& body, std::pair<vec2f, vec2f> endpoints, double thickness); // Segment constructor
         PhysicsShape(RigidBody& body, std::vector<vec2f> points); // Polygon constructor
         PhysicsShape(RigidBody& body, rectf box); // Box constructor
+        PhysicsShape(const PhysicsShape& other);
+        PhysicsShape& operator=(PhysicsShape other);
+        PhysicsShape(PhysicsShape&& other) = default;
+        PhysicsShape& operator=(PhysicsShape&& other) = default;
 
         ShapeTypes getType() const;
         RigidBody& getBody() const;
