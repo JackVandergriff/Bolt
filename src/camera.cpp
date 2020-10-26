@@ -6,6 +6,6 @@
 
 using namespace Bolt;
 
-Camera::Camera() {
+void Camera::onInit() {
     if (!main) main = this;
 }

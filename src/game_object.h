@@ -92,6 +92,7 @@ namespace Bolt {
         constexpr bool isGameObject = std::is_same_v<C, GameObject>;
         std::unique_ptr<Component> component = std::make_unique<C>(std::forward<Args>(args)...);
 
+        component.get()->onInit();
         attachComponent(component.get(), isGameObject);
 
         auto to_return = static_cast<C*>(component.get());

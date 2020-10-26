@@ -89,3 +89,25 @@ GameObject::GameObject(const GameObject &other) : active(other.active), name(oth
         attached->onAttach();
     }
 }
+
+GameObject &GameObject::operator=(const GameObject& other) {
+    components.clear();
+    children.clear();
+    active = other.active;
+    name = other.name;
+    for (const auto& component : other.components) {
+        components.push_back(component->clone());
+        auto attached = components.back().get();
+        attached->owner = this;
+        if (dynamic_cast<GameObject*>(attached)) {
+            children.push_back(attached);
+        } else if (auto t = dynamic_cast<Transform*>(attached)) {
+            transform = t;
+        } else {
+            attached->transform = transform;
+        }
+        attached->onAttach();
+    }
+
+    return *this;
+}

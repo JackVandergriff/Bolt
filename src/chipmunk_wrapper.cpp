@@ -37,6 +37,7 @@ RigidBody::RigidBody(PhysicsSpace& space, RBTypes type) : body(makeRigidBody(typ
 }
 
 RigidBody::~RigidBody() {
+    cpSpaceRemoveBody(cpBodyGetSpace(body.get()), body.get());
     lookup.erase(body.get());
 }
 
@@ -193,6 +194,28 @@ std::vector<PhysicsShape> &RigidBody::getShapes() {
 }
 
 RigidBody::RigidBody(const RigidBody &other) : RigidBody(other.getSpace(), other.getType()) {
+    copy(other);
+}
+
+RigidBody &RigidBody::operator=(const RigidBody& other) {
+    shapes.clear();
+    lookup.erase(body.get());
+    cpSpaceRemoveBody(cpBodyGetSpace(body.get()), body.get());
+    body = makeRigidBody(other.getType());
+    cpSpaceAddBody(other.getSpace().space.get(), body.get());
+    lookup.emplace(body.get(), *this);
+    copy(other);
+    return *this;
+}
+
+void Bolt::swap(RigidBody &first, RigidBody &second) noexcept {
+    using std::swap;
+
+    swap(first.body, second.body);
+    swap(first.shapes, second.shapes);
+}
+
+void RigidBody::copy(const RigidBody& other) {
     setAngularVelocity(other.getAngularVelocity());
     setVelocity(other.getVelocity());
     setCenterOfGravity(other.getCenterOfGravity());
@@ -205,18 +228,6 @@ RigidBody::RigidBody(const RigidBody &other) : RigidBody(other.getSpace(), other
     for (auto& shape : shapes) {
         shape.setBody(*this);
     }
-}
-
-RigidBody &RigidBody::operator=(RigidBody other) {
-    swap(other, *this);
-    return *this;
-}
-
-void Bolt::swap(RigidBody &first, RigidBody &second) noexcept {
-    using std::swap;
-
-    swap(first.body, second.body);
-    swap(first.shapes, second.shapes);
 }
 
 PhysicsShape::PhysicsShape(RigidBody &body, double radius, vec2f offset_from_cog) : type(ShapeTypes::CIRCLE) {

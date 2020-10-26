@@ -31,6 +31,7 @@ namespace Bolt {
         virtual void onUpdate() {};
         virtual void onFixed() {};
         virtual void onEvent(const Event* event) {};
+        virtual void onInit() {};
         virtual std::unique_ptr<Component> clone() const=0;
 
         friend class GameObject;
@@ -41,7 +42,9 @@ namespace Bolt {
     template<typename T>
     class CustomComponent : public Component {
         std::unique_ptr<Component> clone() const override {
-            return std::make_unique<T>(static_cast<const T&>(*this));
+            auto to_return =  std::make_unique<T>(static_cast<const T&>(*this));
+            to_return.get()->onInit();
+            return to_return;
         }
     };
 

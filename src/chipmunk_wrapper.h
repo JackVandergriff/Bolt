@@ -47,6 +47,7 @@ namespace Bolt {
         std::vector<PhysicsShape> shapes;
         static inline std::map<cpBody*, RigidBody&> lookup;
         auto makeRigidBody(RBTypes type);
+        void copy(const RigidBody& other);
     public:
         friend class PhysicsShape;
         friend void swap(RigidBody& first, RigidBody& second) noexcept;
@@ -55,7 +56,7 @@ namespace Bolt {
         RigidBody(PhysicsSpace& space, RBTypes type=RBTypes::DYNAMIC);
         ~RigidBody();
         RigidBody(const RigidBody& other);
-        RigidBody& operator=(RigidBody other);
+        RigidBody& operator=(const RigidBody& other);
         RigidBody(RigidBody&& other) = default;
         RigidBody& operator=(RigidBody&&) = default;
         void onAttach() override;
