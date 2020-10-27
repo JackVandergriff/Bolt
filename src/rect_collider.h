@@ -12,7 +12,7 @@ namespace Bolt {
     class RectCollider : public Collider {
     public:
         rectf collision;
-        bool isInside(vec2f) override;
+        bool isInside(vec2f global_point) override;
         std::unique_ptr<Component> clone() const override;
     };
 

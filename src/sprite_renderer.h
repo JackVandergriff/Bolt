@@ -18,7 +18,7 @@ namespace Bolt {
         int updates_per_frame{0};
         vec2f center;
         Sprite sprite;
-        SpriteRenderer(Sprite);
+        SpriteRenderer(Sprite sprite);
 
         void onUpdate() override;
     };

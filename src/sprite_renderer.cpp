@@ -9,7 +9,7 @@
 
 using namespace Bolt;
 
-SpriteRenderer::SpriteRenderer(Sprite s) : sprite(s){}
+SpriteRenderer::SpriteRenderer(Sprite sprite) : sprite(sprite){}
 
 void SpriteRenderer::onUpdate() {
     if (updates_per_frame > 0) {

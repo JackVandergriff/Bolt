@@ -22,7 +22,7 @@ namespace Bolt {
         virtual void wow_this_is_polymorphic_see() {};
     public:
         const Events type{Events::UNUSED};
-        Event(Events);
+        Event(Events type);
         Event() = default;
     };
 
@@ -33,7 +33,7 @@ namespace Bolt {
         bool pressed;
         bool repeated;
 
-        KeyEvent(SDL_KeyboardEvent);
+        KeyEvent(SDL_KeyboardEvent sdl_event);
     };
 
     struct MouseButtonEvent : public Event {
@@ -42,14 +42,14 @@ namespace Bolt {
         vec2<int32_t> pos;
         bool pressed;
 
-        MouseButtonEvent(SDL_MouseButtonEvent);
+        MouseButtonEvent(SDL_MouseButtonEvent sdl_event);
     };
 
     struct MouseMotionEvent : public Event {
         vec2<int32_t> pos;
         vec2<int32_t> motion;
 
-        MouseMotionEvent(SDL_MouseMotionEvent);
+        MouseMotionEvent(SDL_MouseMotionEvent sdl_event);
     };
 
     struct MouseWheelEvent : public Event {
@@ -57,12 +57,12 @@ namespace Bolt {
         int32_t scroll_vertical;
         bool normal_scroll_direction;
 
-        MouseWheelEvent(SDL_MouseWheelEvent);
+        MouseWheelEvent(SDL_MouseWheelEvent sdl_event);
     };
 
-    Events getEventFromSDL(Uint32 t);
+    Events getEventFromSDL(Uint32 sdl_event);
 
-    std::unique_ptr<Event> translateEvent(SDL_Event);
+    std::unique_ptr<Event> translateEvent(SDL_Event event);
 
 }
 

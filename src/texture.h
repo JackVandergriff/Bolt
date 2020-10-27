@@ -16,7 +16,7 @@ namespace Bolt {
     public:
         SDL_Texture* getTexture() const;
 
-        explicit Texture(SDL_Texture* t) : texture(t) {};
+        explicit Texture(SDL_Texture* texture) : texture{texture} {};
         ~Texture();
 
         //Make Non-copyable, likely to pass around as shared_ptr

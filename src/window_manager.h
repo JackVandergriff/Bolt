@@ -42,21 +42,21 @@ namespace Bolt {
         inline static std::map<Events, std::set<Component*>> eventHandlers;
         inline static std::map<Component*, std::set<Events>> eventHandlers_reverse;
     public:
-        WindowManager(std::string);
+        WindowManager(std::string title);
         WindowManager();
         ~WindowManager();
 
         inline static GameObject* dummy;
 
-        static std::shared_ptr<Texture> loadTexture(fs::path);
+        static std::shared_ptr<Texture> loadTexture(fs::path path);
         static vec2f getMousePos(bool screenSpace = false);
         static std::shared_ptr<Texture> createTextureFromSurface(SDL_Surface* surface);
         static void render(Renderable to_render);
         static void flush();
         static void run(std::function<void()> update=[](){});
-        static void registerHandler(Component*, Events);
-        static void unregisterHandler(Component*, Events);
-        static void unregisterHandler(Component*);
+        static void registerHandler(Component* component, Events event_type);
+        static void unregisterHandler(Component* component, Events event_type);
+        static void unregisterHandler(Component* component);
         static PhysicsSpace& getPhysicsSpace();
         static void enablePhysicsSimulation(bool enable);
         static const std::map<Events, std::set<Component*>> &getEventHandlers();

@@ -11,7 +11,7 @@ namespace Bolt {
 
     class Collider : public CustomComponent<Collider> {
     public:
-        virtual bool isInside(vec2f) {return false;};
+        virtual bool isInside(vec2f global_point) {return false;};
     };
 
 }

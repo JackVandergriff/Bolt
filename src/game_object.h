@@ -35,7 +35,7 @@ namespace Bolt {
         #include TEMPLATE_COMPONENT_TYPE_DECL
         std::unique_ptr<Component> removeComponent();
         #include TEMPLATE_COMPONENT_TYPE_DECL
-        C* addComponent(std::unique_ptr<Component>);
+        C* addComponent(std::unique_ptr<Component> component);
 
         #if __cplusplus > 201703L // C++20 support
         template<ComponentType C, class... Args>
@@ -43,17 +43,17 @@ namespace Bolt {
         #else // stuck on C++17
         template<typename C, class... Args, class = typename std::enable_if<std::is_base_of<Component, C>::value>::type> C* addComponent(Args&&...);
         #endif
-        std::unique_ptr<Component> removeComponent(Component*);
+        std::unique_ptr<Component> removeComponent(Component* to_remove);
 
         void update();
         void fixed();
-        void dispatchEvent(const Event*);
+        void dispatchEvent(const Event* event);
 
-        GameObject* getChild(int);
+        GameObject* getChild(int index);
         std::vector<Component*> getChildren();
 
         GameObject();
-        GameObject(std::string);
+        GameObject(std::string name);
         GameObject(const GameObject& other);
         GameObject& operator=(const GameObject& other);
         GameObject(GameObject&&) = delete;
