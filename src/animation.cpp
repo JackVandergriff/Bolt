@@ -4,6 +4,8 @@
 
 #include "animation.h"
 
+#include <SDL.h>
+
 using namespace Bolt;
 
 recti Animation::operator[](int index) const {

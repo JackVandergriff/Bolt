@@ -7,6 +7,9 @@
 #include "camera.h"
 
 #include <iostream>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 using namespace Bolt;
 
@@ -47,8 +50,8 @@ void WindowManager::render(Renderable to_render) {
     if (!to_render.screenSpace)
         to_render.dest = Camera::main->getTransform()->globalToLocal(to_render.dest);
 
-    SDL_Rect source = (SDL_Rect)to_render.source;
-    SDL_Rect dest = (SDL_Rect)to_render.dest.raw_rect;
+    SDL_Rect source = sdlRectFromRect(to_render.source);
+    SDL_Rect dest = sdlRectFromRect(to_render.dest.raw_rect);
     SDL_RenderCopyEx(
             singleton->renderer,
             to_render.texture,

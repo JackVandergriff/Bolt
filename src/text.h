@@ -5,7 +5,6 @@
 #ifndef BOLT_TEXT_H
 #define BOLT_TEXT_H
 
-#include <SDL_ttf.h>
 #include <memory>
 #include <string>
 

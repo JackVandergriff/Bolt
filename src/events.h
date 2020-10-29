@@ -5,10 +5,15 @@
 #ifndef BOLT_EVENTS_H
 #define BOLT_EVENTS_H
 
-#include <SDL.h>
 #include <memory>
 
 #include "utility.h"
+
+union SDL_Event;
+struct SDL_KeyboardEvent;
+struct SDL_MouseButtonEvent;
+struct SDL_MouseMotionEvent;
+struct SDL_MouseWheelEvent;
 
 namespace Bolt {
 
@@ -60,7 +65,7 @@ namespace Bolt {
         MouseWheelEvent(SDL_MouseWheelEvent sdl_event);
     };
 
-    Events getEventFromSDL(Uint32 sdl_event);
+    Events getEventFromSDL(uint32_t sdl_event);
 
     std::unique_ptr<Event> translateEvent(SDL_Event event);
 

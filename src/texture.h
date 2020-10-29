@@ -5,9 +5,9 @@
 #ifndef BOLT_TEXTURE_H
 #define BOLT_TEXTURE_H
 
-#include <SDL.h>
-#include <SDL_image.h>
 #include "utility.h"
+
+struct SDL_Texture;
 
 namespace Bolt {
 

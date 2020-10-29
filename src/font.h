@@ -5,17 +5,18 @@
 #ifndef BOLT_FONT_H
 #define BOLT_FONT_H
 
-#include <SDL_ttf.h>
 #include "filesystem_includes.h"
 #include "utility.h"
+
+struct _TTF_Font;
 
 namespace Bolt {
 
     class BOLT_EXPORT Font {
     private:
-        TTF_Font* font;
+        _TTF_Font* font;
     public:
-        TTF_Font* getFont();
+        _TTF_Font* getFont();
         Font(fs::path path, int size);
         ~Font();
     };

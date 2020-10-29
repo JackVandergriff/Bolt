@@ -4,6 +4,8 @@
 
 #include "texture.h"
 
+#include <SDL.h>
+
 using namespace Bolt;
 
 Texture::~Texture() {

@@ -11,14 +11,15 @@
 #include "filesystem_includes.h"
 #include "chipmunk_wrapper.h"
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include <memory>
 #include <map>
 #include <set>
 #include <string>
 #include <functional>
+
+struct SDL_Window;
+struct SDL_Renderer;
+struct SDL_Surface;
 
 namespace Bolt {
 

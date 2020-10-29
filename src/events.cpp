@@ -4,11 +4,12 @@
 
 #include "events.h"
 
+#include <SDL.h>
 #include <map>
 
 using namespace Bolt;
 
-Events Bolt::getEventFromSDL(Uint32 sdl_event) {
+Events Bolt::getEventFromSDL(uint32_t sdl_event) {
     static std::map<Uint32, Events> EventLookup{
             {SDL_KEYDOWN, Events::KEYBOARD},
             {SDL_KEYUP, Events::KEYBOARD},

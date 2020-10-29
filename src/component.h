@@ -9,7 +9,6 @@
 #if __cplusplus > 201703L
 #include <concepts>
 #endif
-#include <SDL.h>
 #include <memory>
 
 #include "events.h"

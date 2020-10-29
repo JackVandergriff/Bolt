@@ -7,9 +7,11 @@
 
 #include <iostream>
 #include <cmath>
-#include <SDL.h>
 
 #include "bolt_export.h"
+
+struct SDL_Point;
+struct SDL_Rect;
 
 namespace Bolt {
 
@@ -20,11 +22,9 @@ namespace Bolt {
 
         vec2<T> operator+=(const vec2<T> &rhs);
 
-        explicit operator SDL_Point() const;
-
         vec2<T>(T x, T y) : x(x), y(y) {}
         template<typename T2>
-        vec2<T>(vec2<T2> vec): x((T) vec.x), y((T) vec.y) {}
+        vec2<T>(vec2<T2> vec): x(static_cast<T>(vec.x)), y(static_cast<T>(vec.y)) {}
         vec2<T>() = default;
     };
 
@@ -44,12 +44,10 @@ namespace Bolt {
         explicit operator rect<T2>() const;
         template<typename T2, class = typename std::enable_if_t<std::is_floating_point_v<T2> && std::is_integral_v<T>>>
         operator rect<T2>() const;
-        explicit operator SDL_Rect() const;
 
         rect<T>() = default;
         rect<T>(T x, T y, T w, T h) : x(x), y(y), w(w), h(h) {}
         rect<T>(vec2<T> top_left, T w, T h) : x(top_left.x), y(top_left.y), w(w), h(h) {}
-        rect<T>(SDL_Rect sdl_rect) : x((T) sdl_rect.x), y((T) sdl_rect.y), w((T) sdl_rect.w), h((T) sdl_rect.h) {}
         rect<T>(vec2<T> point_one, vec2<T> point_two) {
             x = std::min(point_one.x, point_two.x);
             y = std::min(point_one.y, point_two.y);
@@ -69,6 +67,13 @@ namespace Bolt {
         rotated_rectf(rect<double> rect, double rotation) : raw_rect(rect), rotation(rotation) {}
         explicit rotated_rectf(rect<double> rect) : raw_rect(rect) {}
     };
+
+    SDL_Point sdlPointFromVec(vec2<double> vec);
+    SDL_Point sdlPointFromVec(vec2<int> vec);
+    rect<double> rectfFromSDL(SDL_Rect rect);
+    rect<int> rectiFromSDL(SDL_Rect rect);
+    SDL_Rect sdlRectFromRect(rect<double> rect);
+    SDL_Rect sdlRectFromRect(rect<int> rect);
 
     template<typename T>
     rect<T> rect<T>::operator+=(const vec2<T> &rhs) {
@@ -99,19 +104,9 @@ namespace Bolt {
     }
 
     template<typename T>
-    rect<T>::operator SDL_Rect() const {
-        return SDL_Rect{(int) x, (int) y, (int) w, (int) h};
-    }
-
-    template<typename T>
     vec2<T> vec2<T>::operator+=(const vec2<T> &rhs) {
         *this = *this + rhs;
         return *this;
-    }
-
-    template<typename T>
-    vec2<T>::operator SDL_Point() const {
-        return SDL_Point{(int) x, (int) y};
     }
 
     template<typename T>

@@ -4,6 +4,8 @@
 
 #include "font.h"
 
+#include <SDL_ttf.h>
+
 using namespace Bolt;
 
 TTF_Font* Font::getFont() {

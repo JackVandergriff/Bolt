@@ -5,6 +5,8 @@
 #include "text.h"
 #include "window_manager.h"
 
+#include <SDL_ttf.h>
+
 using namespace Bolt;
 
 void Text::renderText() {
