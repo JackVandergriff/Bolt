@@ -12,7 +12,7 @@
 
 namespace Bolt {
 
-    class Transform : public CustomComponent<Transform> {
+    class BOLT_EXPORT Transform : public CustomComponent<Transform> {
     public:
         Geometry local_geometry;
         Geometry globalGeometry() const;

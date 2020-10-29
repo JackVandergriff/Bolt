@@ -7,10 +7,11 @@
 
 #include <SDL_ttf.h>
 #include "filesystem_includes.h"
+#include "utility.h"
 
 namespace Bolt {
 
-    class Font {
+    class BOLT_EXPORT Font {
     private:
         TTF_Font* font;
     public:

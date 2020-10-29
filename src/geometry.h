@@ -11,7 +11,7 @@
 
 namespace Bolt {
 
-    struct Geometry {
+    struct BOLT_EXPORT Geometry {
         vec2f offset{0, 0};
         double rotation{0};
         double scale{1};
@@ -33,17 +33,17 @@ namespace Bolt {
         void updateCache() const;
     };
 
-    Geometry applyGeometry(const Geometry &external_geometry, const Geometry &to_apply);
-    vec2f applyGeometry(const vec2f &external_vec2f, const Geometry &to_apply);
-    rotated_rectf applyGeometry(const rectf &external_rect, const Geometry &to_apply);
-    rotated_rectf applyGeometry(const rotated_rectf &external_rect, const Geometry &to_apply);
-    Geometry stripGeometry(const Geometry &local_geometry, const Geometry &to_strip);
-    vec2f stripGeometry(const vec2f &local_vec2f, const Geometry &to_strip);
-    rotated_rectf stripGeometry(const rectf &local_rect, const Geometry &to_strip);
-    rotated_rectf stripGeometry(const rotated_rectf &local_rect, const Geometry &to_strip);
+    BOLT_EXPORT Geometry applyGeometry(const Geometry &external_geometry, const Geometry &to_apply);
+    BOLT_EXPORT vec2f applyGeometry(const vec2f &external_vec2f, const Geometry &to_apply);
+    BOLT_EXPORT rotated_rectf applyGeometry(const rectf &external_rect, const Geometry &to_apply);
+    BOLT_EXPORT rotated_rectf applyGeometry(const rotated_rectf &external_rect, const Geometry &to_apply);
+    BOLT_EXPORT Geometry stripGeometry(const Geometry &local_geometry, const Geometry &to_strip);
+    BOLT_EXPORT vec2f stripGeometry(const vec2f &local_vec2f, const Geometry &to_strip);
+    BOLT_EXPORT rotated_rectf stripGeometry(const rectf &local_rect, const Geometry &to_strip);
+    BOLT_EXPORT rotated_rectf stripGeometry(const rotated_rectf &local_rect, const Geometry &to_strip);
 
 }
 
-std::ostream &operator<<(std::ostream &os, const Bolt::Geometry &geometry);
+BOLT_EXPORT std::ostream &operator<<(std::ostream &os, const Bolt::Geometry &geometry);
 
 #endif //BOLT_GEOMETRY_H

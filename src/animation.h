@@ -13,7 +13,7 @@
 
 namespace Bolt {
 
-    class Animation {
+    class BOLT_EXPORT Animation {
     private:
         std::vector<recti> frames{};
         int frame{0};
@@ -35,8 +35,8 @@ namespace Bolt {
         Animation() = default;
     };
 
-    Animation generateTrivialAnimation(const std::shared_ptr<Texture>& texture);
-    Animation generateSimpleAnimation(const std::shared_ptr<Texture>& texture, recti first_frame, int num_frames = 0);
+    BOLT_EXPORT Animation generateTrivialAnimation(const std::shared_ptr<Texture>& texture);
+    BOLT_EXPORT Animation generateSimpleAnimation(const std::shared_ptr<Texture>& texture, recti first_frame, int num_frames = 0);
 }
 
 #endif //BOLT_ANIMATION_H

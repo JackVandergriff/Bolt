@@ -19,7 +19,7 @@ namespace Bolt {
     class GameObject; // Forward definition, gameobject needs access to Component class
     class Transform;
 
-    class Component {
+    class BOLT_EXPORT Component {
     protected:
         GameObject* owner = nullptr;
         Transform* transform = nullptr;
@@ -40,7 +40,7 @@ namespace Bolt {
     };
 
     template<typename T>
-    class CustomComponent : public Component {
+    class BOLT_EXPORT CustomComponent : public Component {
         std::unique_ptr<Component> clone() const override {
             auto to_return =  std::make_unique<T>(static_cast<const T&>(*this));
             to_return.get()->onInit();

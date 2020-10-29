@@ -10,7 +10,7 @@
 
 namespace Bolt {
 
-    class Camera : public CustomComponent<Camera> {
+    class BOLT_EXPORT Camera : public CustomComponent<Camera> {
     public:
         static inline Camera* main = nullptr;
         void onInit() override;

@@ -20,24 +20,24 @@ class cpSpace;
 
 namespace Bolt {
 
-    const static inline double PHYSICS_BOX_RADIUS = 0.1f;
+    BOLT_EXPORT const static inline double PHYSICS_BOX_RADIUS = 0.1f;
 
-    enum class RBTypes {
+    enum class BOLT_EXPORT RBTypes {
         DYNAMIC, KINEMATIC, STATIC
     };
 
-    enum class ShapeTypes {
+    enum class BOLT_EXPORT ShapeTypes {
         CIRCLE, SEGMENT, POLYGON
     };
 
     class PhysicsSpace;
     class PhysicsShape;
 
-    struct CollisionFilter {
+    struct BOLT_EXPORT CollisionFilter {
         // TODO
     };
 
-    class RigidBody : public CustomComponent<RigidBody> {
+    class BOLT_EXPORT RigidBody : public CustomComponent<RigidBody> {
     private:
         struct Deleter {
             void operator()(cpBody* to_free); // Can't use lambda, have to keep cpBodyFree out of header
@@ -99,7 +99,7 @@ namespace Bolt {
         void sleep();
     };
 
-    class PhysicsShape {
+    class BOLT_EXPORT PhysicsShape {
     private:
         struct Deleter {
             void operator()(cpShape* to_free); // Can't use lambda, have to keep cpShapeFree out of header
@@ -154,7 +154,7 @@ namespace Bolt {
         vec2f polygonGetCentroid() const;
     };
 
-    class PhysicsSpace {
+    class BOLT_EXPORT PhysicsSpace {
     private:
         std::unique_ptr<cpSpace, std::function<void(cpSpace*)>> space; // This is literal magic, right?
         static inline std::map<cpSpace*, PhysicsSpace&> lookup;

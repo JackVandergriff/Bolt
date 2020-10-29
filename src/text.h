@@ -15,7 +15,7 @@
 
 namespace Bolt {
 
-    class Text {
+    class BOLT_EXPORT Text {
     private:
         std::shared_ptr<Texture> rendered_text;
         vec2f dimensions;

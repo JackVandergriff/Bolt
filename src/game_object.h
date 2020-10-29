@@ -18,7 +18,7 @@
 
 namespace Bolt {
 
-    class GameObject : public CustomComponent<GameObject> {
+    class BOLT_EXPORT GameObject : public CustomComponent<GameObject> {
     private:
         std::vector<std::unique_ptr<Component>> components;
         std::vector<Component*> children;

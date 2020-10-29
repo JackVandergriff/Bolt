@@ -22,14 +22,14 @@
 
 namespace Bolt {
 
-    struct Renderable {
+    struct BOLT_EXPORT Renderable {
         SDL_Texture* texture;
         rectf source;
         rotated_rectf dest;
         bool screenSpace{false};
     };
 
-    class WindowManager {
+    class BOLT_EXPORT WindowManager {
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;

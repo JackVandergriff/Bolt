@@ -7,10 +7,11 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include "utility.h"
 
 namespace Bolt {
 
-    class Texture {
+    class BOLT_EXPORT Texture {
     private:
         SDL_Texture* texture;
     public:

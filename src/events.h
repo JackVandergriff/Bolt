@@ -12,12 +12,12 @@
 
 namespace Bolt {
 
-    enum class Events {
+    enum class BOLT_EXPORT Events {
         UNUSED, KEYBOARD, MOUSEBUTTON, MOUSEMOTION, MOUSEWHEEL, COLLISION
         //KEYDOWN, KEYUP, MOUSEDOWN, MOUSEUP, MOUSEMOVE, MOUSEWHEEL, UNUSED, COLLISION
     };
 
-    struct Event {
+    struct BOLT_EXPORT Event {
     protected:
         virtual void wow_this_is_polymorphic_see() {};
     public:
@@ -26,7 +26,7 @@ namespace Bolt {
         Event() = default;
     };
 
-    struct KeyEvent : public Event {
+    struct BOLT_EXPORT KeyEvent : public Event {
     public:
         uint keyCode;
         uint16_t modifiers;
@@ -36,7 +36,7 @@ namespace Bolt {
         KeyEvent(SDL_KeyboardEvent sdl_event);
     };
 
-    struct MouseButtonEvent : public Event {
+    struct BOLT_EXPORT MouseButtonEvent : public Event {
         uint8_t button;
         uint8_t num_clicks;
         vec2<int32_t> pos;
@@ -45,14 +45,14 @@ namespace Bolt {
         MouseButtonEvent(SDL_MouseButtonEvent sdl_event);
     };
 
-    struct MouseMotionEvent : public Event {
+    struct BOLT_EXPORT MouseMotionEvent : public Event {
         vec2<int32_t> pos;
         vec2<int32_t> motion;
 
         MouseMotionEvent(SDL_MouseMotionEvent sdl_event);
     };
 
-    struct MouseWheelEvent : public Event {
+    struct BOLT_EXPORT MouseWheelEvent : public Event {
         int32_t scroll_horizontal;
         int32_t scroll_vertical;
         bool normal_scroll_direction;

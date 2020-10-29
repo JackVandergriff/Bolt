@@ -14,7 +14,7 @@
 
 namespace Bolt {
 
-    class Sprite {
+    class BOLT_EXPORT Sprite {
     private:
         std::shared_ptr<Texture> texture;
         std::vector<Animation> animations;

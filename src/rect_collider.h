@@ -9,7 +9,7 @@
 
 namespace Bolt {
 
-    class RectCollider : public Collider {
+    class BOLT_EXPORT RectCollider : public Collider {
     public:
         rectf collision;
         bool isInside(vec2f global_point) override;

@@ -9,10 +9,12 @@
 #include <cmath>
 #include <SDL.h>
 
+#include "bolt_export.h"
+
 namespace Bolt {
 
     template<typename T>
-    struct vec2 {
+    struct BOLT_EXPORT vec2 {
         T x{0};
         T y{0};
 
@@ -27,7 +29,7 @@ namespace Bolt {
     };
 
     template<typename T>
-    struct rect {
+    struct BOLT_EXPORT rect {
         T x{0};
         T y{0};
         T w{0};
@@ -56,7 +58,7 @@ namespace Bolt {
         }
     };
 
-    struct rotated_rectf {
+    struct BOLT_EXPORT rotated_rectf {
         rect<double> raw_rect;
         double rotation{0};
 
@@ -113,31 +115,31 @@ namespace Bolt {
     }
 
     template<typename T>
-    vec2<T> operator+(const vec2<T> &lhs, const vec2<T> &rhs) {
+    BOLT_EXPORT vec2<T> operator+(const vec2<T> &lhs, const vec2<T> &rhs) {
         return vec2<T>{lhs.x + rhs.x, lhs.y + rhs.y};
     }
 
     template<typename T>
-    vec2<T> operator*(const vec2<T> &lhs, const T &rhs) {
+    BOLT_EXPORT vec2<T> operator*(const vec2<T> &lhs, const T &rhs) {
         return vec2<T>{lhs.x * rhs, lhs.y * rhs};
     }
 
     template<typename T>
-    rect<T> operator+(const rect<T> &lhs, const vec2<T> &rhs) {
+    BOLT_EXPORT rect<T> operator+(const rect<T> &lhs, const vec2<T> &rhs) {
         return rect<T>{lhs.x + rhs.x, lhs.y + rhs.y, lhs.w, lhs.h};
     }
 
     template<typename T>
-    rect<T> operator-(const rect<T> &lhs, const vec2<T> &rhs) {
+    BOLT_EXPORT rect<T> operator-(const rect<T> &lhs, const vec2<T> &rhs) {
         return rect<T>{lhs.x - rhs.x, lhs.y - rhs.y, lhs.w, lhs.h};
     }
 
     template<typename T>
-    bool inRect(const vec2<T> point, const rect<T> rect) {
+    BOLT_EXPORT bool inRect(const vec2<T> point, const rect<T> rect) {
         return point.x >= rect.x && point.y >= rect.y && point.x <= rect.x + rect.w && point.y <= rect.y + rect.h;
     }
 
-    bool inRect(const vec2<double> point, const rotated_rectf rect);
+    BOLT_EXPORT bool inRect(const vec2<double> point, const rotated_rectf rect);
 
     using vec2f = vec2<double>;
     using vec2i = vec2<int>;
@@ -145,7 +147,7 @@ namespace Bolt {
     using recti = rect<int>;
 
     template<typename T>
-    std::ostream &operator<<(std::ostream &os, const vec2<T> &vec) {
+    BOLT_EXPORT std::ostream &operator<<(std::ostream &os, const vec2<T> &vec) {
         os << '(' << vec.x << ", " << vec.y << ')';
         return os;
     }
